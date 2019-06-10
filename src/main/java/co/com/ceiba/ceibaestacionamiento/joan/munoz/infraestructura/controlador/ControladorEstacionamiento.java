@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.entidades.RegistroVehiculo;
-import co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.servicio.IServicioRegistrarVehiculo;
+import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.IServicioRegistrarVehiculo;
+import co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.modelo.RegistroVehiculo;
 
 @RestController
 @CrossOrigin(origins = { "http://localhost:4200" })

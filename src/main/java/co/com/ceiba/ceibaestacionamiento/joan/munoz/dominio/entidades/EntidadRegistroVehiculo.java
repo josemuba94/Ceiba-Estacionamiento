@@ -14,24 +14,21 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table (name = "RegistrosVehiculo")
-public class RegistroVehiculo {
+@Table (name = "Registros_Vehiculo")
+public class EntidadRegistroVehiculo {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@JsonIgnore
-	private Long id;
-	
+	private Long id;	
 	@Temporal(TemporalType.TIMESTAMP)
 	@NotNull
-	private Date fechaIngreso;
-	
+	private Date fechaIngreso;	
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date fechaSalida;
-	
-	private char tipoVehiculo;
+	private Date fechaSalida;	
+	private String tipoVehiculo;
 	private String placa;
-	
+	private int valorFacturado;
 	public Long getId() {
 		return id;
 	}
@@ -50,10 +47,10 @@ public class RegistroVehiculo {
 	public void setFechaSalida(Date fechaSalida) {
 		this.fechaSalida = fechaSalida;
 	}
-	public char getTipoVehiculo() {
+	public String getTipoVehiculo() {
 		return tipoVehiculo;
 	}
-	public void setTipoVehiculo(char tipoVehiculo) {
+	public void setTipoVehiculo(String tipoVehiculo) {
 		this.tipoVehiculo = tipoVehiculo;
 	}
 	public String getPlaca() {
@@ -62,4 +59,11 @@ public class RegistroVehiculo {
 	public void setPlaca(String placa) {
 		this.placa = placa;
 	}
+	public int getValorFacturado() {
+		return valorFacturado;
+	}
+	public void setValorFacturado(int valorFacturado) {
+		this.valorFacturado = valorFacturado;
+	}
+	
 }

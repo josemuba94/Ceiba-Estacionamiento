@@ -2,24 +2,27 @@ package co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.modelo;
 
 import java.util.Date;
 
-public class RegistroVehiculoDTO {
+public class RegistroVehiculo {
 
 	private Long id;
 	private Date fechaIngreso;
 	private Date fechaSalida;
-	private char tipoVehiculo;
+	private EnumTipoVehiculo tipoVehiculo;
 	private String placa;
+	private int valorFacturado;
 	
-	public RegistroVehiculoDTO() {
+	public RegistroVehiculo() {
 		
 	}
 	
-	public RegistroVehiculoDTO(Long id, Date fechaIngreso, Date fechaSalida, char tipoVehiculo, String placa) {
+	public RegistroVehiculo(Long id, Date fechaIngreso, Date fechaSalida,
+			EnumTipoVehiculo tipoVehiculo, String placa, int valorFacturado) {
 		this.id = id;
 		this.fechaIngreso = fechaIngreso;
 		this.fechaSalida = fechaSalida;
 		this.tipoVehiculo = tipoVehiculo;
 	    this.placa = placa;
+	    this.valorFacturado = valorFacturado;
 	}
 	
 	public Long getId() {
@@ -40,10 +43,10 @@ public class RegistroVehiculoDTO {
 	public void setFechaSalida(Date fechaSalida) {
 		this.fechaSalida = fechaSalida;
 	}
-	public char getTipoVehiculo() {
+	public EnumTipoVehiculo getTipoVehiculo() {
 		return tipoVehiculo;
 	}
-	public void setTipoVehiculo(char tipoVehiculo) {
+	public void setTipoVehiculo(EnumTipoVehiculo tipoVehiculo) {
 		this.tipoVehiculo = tipoVehiculo;
 	}
 	public String getPlaca() {
@@ -51,6 +54,12 @@ public class RegistroVehiculoDTO {
 	}
 	public void setPlaca(String placa) {
 		this.placa = placa;
+	}
+	public int getValorFacturado() {
+		return valorFacturado;
+	}
+	public void setValorFacturado(int valorFacturado) {
+		this.valorFacturado = valorFacturado;
 	}
 	
 }
