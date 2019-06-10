@@ -21,7 +21,7 @@ pipeline {
 			steps {
 				echo "------------>Checkout<------------"
 				checkout([$class: 'GitSCM', branches: [
-						[name: '*/master']
+						[name: '*/Development']
 					],
 					doGenerateSubmoduleConfigurations: false, extensions: [], gitTool:
 					'Git_Centos', submoduleCfg: [], userRemoteConfigs: [
@@ -32,7 +32,6 @@ pipeline {
 				])
 			}
 		}
-
 
 		stage('Compile') {
 			steps {
@@ -74,7 +73,6 @@ pipeline {
 			       }
 		  }
 	}
-
 
 	post {
 		always {
