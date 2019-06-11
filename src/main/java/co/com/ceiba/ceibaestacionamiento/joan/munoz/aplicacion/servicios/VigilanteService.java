@@ -9,7 +9,7 @@ import co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.modelo.IVigilante;
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.modelo.RegistroParqueo;
 
 @Service
-public class VigilanteService implements IVigilanteService {
+public class VigilanteService implements RegistrarVehiculoService {
 
 	@Autowired
 	private IVigilante vigilante;
@@ -17,9 +17,9 @@ public class VigilanteService implements IVigilanteService {
 	private AplicacionFactory aplicacionFactory;
 
 	@Override
-	public RegistroParqueoDTO registrarVehiculo(RegistroParqueoDTO registroParqueoDTO) {
+	public RegistroParqueoDTO registrarIngresoVehiculo(RegistroParqueoDTO registroParqueoDTO) {
 		RegistroParqueo registroParqueo = aplicacionFactory.convertirDTODominio(registroParqueoDTO);
-		RegistroParqueo registroParqueoAlmacenado = vigilante.registrarVehiculo(registroParqueo);
+		RegistroParqueo registroParqueoAlmacenado = vigilante.registrarIngresoVehiculo(registroParqueo);
 		return aplicacionFactory.convertirDominioDTO(registroParqueoAlmacenado);
 	}
 

@@ -22,7 +22,7 @@ public class DominioFactory {
 		return registroParqueoEntity;
 	}
 
-	public RegistroParqueo convertirEntidadDominioa(RegistroParqueoEntity registroParqueoEntity) {
+	public RegistroParqueo convertirEntidadDominio(RegistroParqueoEntity registroParqueoEntity) {
 		return new RegistroParqueo(registroParqueoEntity.getId(), registroParqueoEntity.getFechaIngreso(),
 				registroParqueoEntity.getFechaSalida(), TipoVehiculoEnum.valueOf(registroParqueoEntity.getTipoVehiculo()),
 				registroParqueoEntity.getEsMotoPesada(), registroParqueoEntity.getPlaca(),

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.dtos.RegistroParqueoDTO;
-import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.servicios.IVigilanteService;
+import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.servicios.RegistrarVehiculoService;
 
 @RestController
 @CrossOrigin(origins = { "http://localhost:4200" })
@@ -16,12 +16,12 @@ import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.servicios.IVigila
 public class EstacionamientoController {
 	
 	@Autowired
-	private IVigilanteService vigilanteService; 
+	private RegistrarVehiculoService vigilanteService; 
 	
-	@PostMapping("/ingresarVehiculo")
-	public RegistroParqueoDTO ingresarVehiculo(@RequestBody RegistroParqueoDTO registroParqueoDTO) {
+	@PostMapping("/registrarIngresoVehiculo")
+	public RegistroParqueoDTO registrarIngresoVehiculo(@RequestBody RegistroParqueoDTO registroParqueoDTO) {
 		
-		 return vigilanteService.registrarVehiculo(registroParqueoDTO);
+		 return vigilanteService.registrarIngresoVehiculo(registroParqueoDTO);
 	}
 	
 }
