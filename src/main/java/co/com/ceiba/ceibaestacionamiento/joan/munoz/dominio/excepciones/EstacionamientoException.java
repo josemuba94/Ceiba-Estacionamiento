@@ -1,10 +1,10 @@
 package co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.excepciones;
 
-public class ExcepcionEstacionamiento extends RuntimeException {
+public class EstacionamientoException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 	
-	public ExcepcionEstacionamiento(String mensaje) {
+	public EstacionamientoException(String mensaje) {
 		super(mensaje);
 	}
 }

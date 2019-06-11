@@ -1,6 +1,6 @@
-package co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.entidades;
+package co.com.ceiba.ceibaestacionamiento.joan.munoz.infraestructura.entidades;
 
-import java.util.Date;
+import java.util.Calendar;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,8 +14,8 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table (name = "Registros_Vehiculo")
-public class EntidadRegistroVehiculo {
+@Table (name = "Registros_Parqueo")
+public class RegistroParqueoEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,28 +23,33 @@ public class EntidadRegistroVehiculo {
 	private Long id;	
 	@Temporal(TemporalType.TIMESTAMP)
 	@NotNull
-	private Date fechaIngreso;	
+	private Calendar fechaIngreso;	
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date fechaSalida;	
+	private Calendar fechaSalida;	
+	@NotNull
 	private String tipoVehiculo;
+	@NotNull
+	private char esMotoPesada;
+	@NotNull
 	private String placa;
-	private int valorFacturado;
+	private double valorFacturado;
+	
 	public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public Date getFechaIngreso() {
+	public Calendar getFechaIngreso() {
 		return fechaIngreso;
 	}
-	public void setFechaIngreso(Date fechaIngreso) {
+	public void setFechaIngreso(Calendar fechaIngreso) {
 		this.fechaIngreso = fechaIngreso;
 	}
-	public Date getFechaSalida() {
+	public Calendar getFechaSalida() {
 		return fechaSalida;
 	}
-	public void setFechaSalida(Date fechaSalida) {
+	public void setFechaSalida(Calendar fechaSalida) {
 		this.fechaSalida = fechaSalida;
 	}
 	public String getTipoVehiculo() {
@@ -53,16 +58,22 @@ public class EntidadRegistroVehiculo {
 	public void setTipoVehiculo(String tipoVehiculo) {
 		this.tipoVehiculo = tipoVehiculo;
 	}
+	public char getEsMotoPesada() {
+		return esMotoPesada;
+	}
+	public void setEsMotoPesada(char esMotoPesada) {
+		this.esMotoPesada = esMotoPesada;
+	}
 	public String getPlaca() {
 		return placa;
 	}
 	public void setPlaca(String placa) {
 		this.placa = placa;
 	}
-	public int getValorFacturado() {
+	public double getValorFacturado() {
 		return valorFacturado;
 	}
-	public void setValorFacturado(int valorFacturado) {
+	public void setValorFacturado(double valorFacturado) {
 		this.valorFacturado = valorFacturado;
 	}
 	
