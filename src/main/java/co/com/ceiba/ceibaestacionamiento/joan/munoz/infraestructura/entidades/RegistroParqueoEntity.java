@@ -13,8 +13,13 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import lombok.Getter;
+import lombok.Setter;
+
 @Entity
 @Table(name = "Registros_Parqueo")
+@Getter
+@Setter
 public class RegistroParqueoEntity {
 
 	@Id
@@ -33,61 +38,5 @@ public class RegistroParqueoEntity {
 	@NotNull
 	private String placa;
 	private double valorFacturado;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Calendar getFechaIngreso() {
-		return fechaIngreso;
-	}
-
-	public void setFechaIngreso(Calendar fechaIngreso) {
-		this.fechaIngreso = fechaIngreso;
-	}
-
-	public Calendar getFechaSalida() {
-		return fechaSalida;
-	}
-
-	public void setFechaSalida(Calendar fechaSalida) {
-		this.fechaSalida = fechaSalida;
-	}
-
-	public String getTipoVehiculo() {
-		return tipoVehiculo;
-	}
-
-	public void setTipoVehiculo(String tipoVehiculo) {
-		this.tipoVehiculo = tipoVehiculo;
-	}
-
-	public char getEsMotoPesada() {
-		return esMotoPesada;
-	}
-
-	public void setEsMotoPesada(char esMotoPesada) {
-		this.esMotoPesada = esMotoPesada;
-	}
-
-	public String getPlaca() {
-		return placa;
-	}
-
-	public void setPlaca(String placa) {
-		this.placa = placa;
-	}
-
-	public double getValorFacturado() {
-		return valorFacturado;
-	}
-
-	public void setValorFacturado(double valorFacturado) {
-		this.valorFacturado = valorFacturado;
-	}
 
 }

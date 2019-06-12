@@ -9,7 +9,7 @@ import co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.modelo.TipoVehiculoE
 
 @Service
 public class AplicacionFactory {
-
+	
 	public TipoVehiculoEnum obtenerTipoVehiculo(String tipoVehiculo) {
 		for (TipoVehiculoEnum tipoVehiculoValido : TipoVehiculoEnum.values())
 			if (tipoVehiculoValido.name().equals(tipoVehiculo))

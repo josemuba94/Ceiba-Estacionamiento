@@ -2,8 +2,13 @@ package co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.dtos;
 
 import java.util.Calendar;
 
-public class RegistroParqueoDTO {
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
+public class RegistroParqueoDTO {
+	
 	private Long id;
 	private Calendar fechaIngreso;
 	private Calendar fechaSalida;
@@ -11,7 +16,7 @@ public class RegistroParqueoDTO {
 	private char esMotoPesada;
 	private String placa;
 	private double valorFacturado;
-
+	
 	public RegistroParqueoDTO() {
 
 	}
@@ -25,45 +30,5 @@ public class RegistroParqueoDTO {
 		this.esMotoPesada = esMotoPesada;
 		this.placa = placa;
 		this.valorFacturado = valorFacturado;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public Calendar getFechaIngreso() {
-		return fechaIngreso;
-	}
-
-	public Calendar getFechaSalida() {
-		return fechaSalida;
-	}
-
-	public String getTipoVehiculo() {
-		return tipoVehiculo;
-	}
-
-	public void setTipoVehiculo(String tipoVehiculo) {
-		this.tipoVehiculo = tipoVehiculo;
-	}
-
-	public char getEsMotoPesada() {
-		return esMotoPesada;
-	}
-
-	public void setEsMotoPesada(char esMotoPesada) {
-		this.esMotoPesada = esMotoPesada;
-	}
-
-	public String getPlaca() {
-		return placa;
-	}
-
-	public void setPlaca(String placa) {
-		this.placa = placa;
-	}
-
-	public double getValorFacturado() {
-		return valorFacturado;
 	}
 }

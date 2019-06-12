@@ -2,6 +2,11 @@ package co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.modelo;
 
 import java.util.Calendar;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class RegistroParqueo {
 
 	private Long id;
@@ -24,46 +29,6 @@ public class RegistroParqueo {
 		this.tipoVehiculo = tipoVehiculo;
 		this.esMotoPesada = esMotoPesada;
 		this.placa = placa;
-		this.valorFacturado = valorFacturado;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public Calendar getFechaIngreso() {
-		return fechaIngreso;
-	}
-
-	public void setFechaIngreso(Calendar fechaIngreso) {
-		this.fechaIngreso = fechaIngreso;
-	}
-
-	public Calendar getFechaSalida() {
-		return fechaSalida;
-	}
-
-	public void setFechaSalida(Calendar fechaSalida) {
-		this.fechaSalida = fechaSalida;
-	}
-
-	public TipoVehiculoEnum getTipoVehiculo() {
-		return tipoVehiculo;
-	}
-
-	public char getEsMotoPesada() {
-		return esMotoPesada;
-	}
-
-	public String getPlaca() {
-		return placa;
-	}
-
-	public double getValorFacturado() {
-		return valorFacturado;
-	}
-
-	public void setValorFacturado(double valorFacturado) {
 		this.valorFacturado = valorFacturado;
 	}
 }
