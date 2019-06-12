@@ -1,4 +1,4 @@
-package co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.integracion;
+package co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.integracion;
 
 import static org.junit.Assert.*;
 
@@ -10,7 +10,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.modelo.IVigilante;
+import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.dtos.RegistroParqueoDTO;
+import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.fabrica.AplicacionFactory;
+import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.servicios.RegistrarVehiculoService;
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.modelo.RegistroParqueo;
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.infraestructura.repositorio.RepositorioRegistroParqueo;
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.testdatabuilder.RegistroParqueoTestDataBuilder;
@@ -18,12 +20,14 @@ import co.com.ceiba.ceibaestacionamiento.joan.munoz.testdatabuilder.RegistroParq
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @TestPropertySource(locations = "classpath:application-test.properties")
-public class VigilanteTest {
+public class VigilanteServiceTest {
 
+	@Autowired
+	private RegistrarVehiculoService registrarVehiculoService;
 	@Autowired
 	private RepositorioRegistroParqueo repositorioRegistroParqueo;
 	@Autowired
-	private IVigilante vigilante;
+	private AplicacionFactory aplicacionFactory;
 
 	@After
 	public void tearDown() {
@@ -38,13 +42,14 @@ public class VigilanteTest {
 				RegistroParqueoTestDataBuilder.SIN_SALIDA_FACTURADA).conFechaIngreso(null).construirRegistroParqueo();
 
 		// Act
-		RegistroParqueo registroParqueoAlmacenado = vigilante.registrarIngresoVehiculo(registroParqueo);
+		RegistroParqueoDTO registroParqueoAlmacenado = registrarVehiculoService
+				.registrarIngresoVehiculo(aplicacionFactory.convertirDominioDTO(registroParqueo));
 
 		// Assert
 		assertNotNull(registroParqueoAlmacenado.getId());
 		assertNotNull(registroParqueoAlmacenado.getFechaIngreso());
 		assertNull(registroParqueoAlmacenado.getFechaSalida());
-		assertEquals(registroParqueoAlmacenado.getTipoVehiculo().name(), registroParqueo.getTipoVehiculo().name());
+		assertEquals(registroParqueoAlmacenado.getTipoVehiculo(), registroParqueo.getTipoVehiculo().name());
 		assertTrue(registroParqueoAlmacenado.getEsMotoPesada() == registroParqueo.getEsMotoPesada());
 		assertEquals(registroParqueoAlmacenado.getPlaca(), registroParqueo.getPlaca());
 		assertTrue(registroParqueoAlmacenado.getValorFacturado() == 0.0);

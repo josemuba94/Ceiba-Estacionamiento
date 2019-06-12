@@ -3,9 +3,6 @@ package co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.unitarias;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -23,66 +20,63 @@ import co.com.ceiba.ceibaestacionamiento.joan.munoz.testdatabuilder.RegistroParq
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class VigilanteTest {
-	
+
 	@Mock
-	private RepositorioRegistroParqueo repositorioRegistroParqueo;	
+	private RepositorioRegistroParqueo repositorioRegistroParqueo;
 	@InjectMocks
 	private Vigilante vigilante;
-	
+
 	@Test
 	public void diaNoHabilTest() {
 		// Arrange
 		RegistroParqueo registroParqueo = new RegistroParqueoTestDataBuilder(
-				RegistroParqueoTestDataBuilder.SIN_SALIDA_FACTURADA).conPlaca("AKY12A")
-				.construirRegistroParqueo();		
+				RegistroParqueoTestDataBuilder.SIN_SALIDA_FACTURADA).conPlaca("AKY12A").construirRegistroParqueo();
 		try {
 			// Act
-			vigilante.realizarValidacionesIngreso(registroParqueo, new GregorianCalendar(2019, Calendar.JUNE, 11, 12, 32));
+			vigilante.realizarValidacionesIngreso(registroParqueo);
 			fail();
-		}catch (EstacionamientoException e) {
+		} catch (EstacionamientoException e) {
 			// Assert
 			assertEquals(Vigilante.DIA_NO_HABIL, e.getMessage());
-		}			
+		}
 	}
-	
+
 	@Test
 	public void sinEspacioParaMotosTest() {
 		// Arrange
 		RegistroParqueo registroParqueo = new RegistroParqueoTestDataBuilder(
-				RegistroParqueoTestDataBuilder.SIN_SALIDA_FACTURADA)
-				.construirRegistroParqueo();	
-		
+				RegistroParqueoTestDataBuilder.SIN_SALIDA_FACTURADA).construirRegistroParqueo();
+
 		when(repositorioRegistroParqueo.cantidadVehiculosPorTipo(registroParqueo.getTipoVehiculo().name()))
 				.thenReturn(Vigilante.CUPO_MOTOS);
-		
+
 		try {
 			// Act
-			vigilante.realizarValidacionesIngreso(registroParqueo, Calendar.getInstance());
+			vigilante.realizarValidacionesIngreso(registroParqueo);
 			fail();
-		}catch (EstacionamientoException e) {
+		} catch (EstacionamientoException e) {
 			// Assert
 			assertEquals(Vigilante.MOTOS_SIN_CUPO, e.getMessage());
-		}			
+		}
 	}
-	
+
 	@Test
 	public void sinEspacioParaCarrosTest() {
 		// Arrange
 		RegistroParqueo registroParqueo = new RegistroParqueoTestDataBuilder(
-				RegistroParqueoTestDataBuilder.SIN_SALIDA_FACTURADA)
-				.conTipoVehiculo(TipoVehiculoEnum.CARRO)
-				.construirRegistroParqueo();	
-		
+				RegistroParqueoTestDataBuilder.SIN_SALIDA_FACTURADA).conTipoVehiculo(TipoVehiculoEnum.CARRO)
+						.construirRegistroParqueo();
+
 		when(repositorioRegistroParqueo.cantidadVehiculosPorTipo(registroParqueo.getTipoVehiculo().name()))
 				.thenReturn(Vigilante.CUPO_CARROS);
-		
+
 		try {
 			// Act
-			vigilante.realizarValidacionesIngreso(registroParqueo, Calendar.getInstance());
+			vigilante.realizarValidacionesIngreso(registroParqueo);
 			fail();
-		}catch (EstacionamientoException e) {
+		} catch (EstacionamientoException e) {
 			// Assert
 			assertEquals(Vigilante.CARROS_SIN_CUPO, e.getMessage());
-		}			
+		}
 	}
 }

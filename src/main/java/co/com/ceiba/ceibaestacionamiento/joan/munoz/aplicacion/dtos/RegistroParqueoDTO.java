@@ -11,20 +11,20 @@ public class RegistroParqueoDTO {
 	private char esMotoPesada;
 	private String placa;
 	private double valorFacturado;
-		
+
 	public RegistroParqueoDTO() {
-		
+
 	}
 
-	public RegistroParqueoDTO(Long id, Calendar fechaIngreso, Calendar fechaSalida,
-			String tipoVehiculo, char esMotoPesada, String placa, double valorFacturado) {
+	public RegistroParqueoDTO(Long id, Calendar fechaIngreso, Calendar fechaSalida, String tipoVehiculo,
+			char esMotoPesada, String placa, double valorFacturado) {
 		this.id = id;
 		this.fechaIngreso = fechaIngreso;
 		this.fechaSalida = fechaSalida;
 		this.tipoVehiculo = tipoVehiculo;
 		this.esMotoPesada = esMotoPesada;
-	    this.placa = placa;
-	    this.valorFacturado = valorFacturado;
+		this.placa = placa;
+		this.valorFacturado = valorFacturado;
 	}
 
 	public Long getId() {
@@ -54,7 +54,7 @@ public class RegistroParqueoDTO {
 	public String getTipoVehiculo() {
 		return tipoVehiculo;
 	}
-	
+
 	public void setTipoVehiculo(String tipoVehiculo) {
 		this.tipoVehiculo = tipoVehiculo;
 	}
@@ -83,5 +83,4 @@ public class RegistroParqueoDTO {
 		this.valorFacturado = valorFacturado;
 	}
 
-	
 }

@@ -10,7 +10,7 @@ public class RegistroParqueoTestDataBuilder {
 
 	public static final boolean CON_SALIDA_FACTURADA = true;
 	public static final boolean SIN_SALIDA_FACTURADA = false;
-	
+
 	private Long id;
 	private Calendar fechaIngreso;
 	private Calendar fechaSalida;
@@ -18,17 +18,17 @@ public class RegistroParqueoTestDataBuilder {
 	private char esMotoPesada;
 	private String placa;
 	private double valorFacturado;
-	
+
 	public RegistroParqueoTestDataBuilder(boolean salidaFacturada) {
-		this.fechaIngreso = new GregorianCalendar(2019, Calendar.JUNE, 10, 12, 22); 
-		this.tipoVehiculo = TipoVehiculoEnum.MOTO; 
+		this.fechaIngreso = new GregorianCalendar(2019, Calendar.JUNE, 11, 12, 22);
+		this.tipoVehiculo = TipoVehiculoEnum.MOTO;
 		this.esMotoPesada = 'S';
-		this.placa = "VKY61C"; 
-		
-		if ( salidaFacturada ) {
+		this.placa = "VKY61C";
+
+		if (salidaFacturada) {
 			this.id = 123L;
-			this.fechaSalida = new GregorianCalendar(2019, Calendar.JUNE, 10, 12, 57);
-			this.valorFacturado = 500; 
+			this.fechaSalida = new GregorianCalendar(2019, Calendar.JUNE, 11, 12, 57);
+			this.valorFacturado = 500;
 		}
 	}
 
@@ -67,8 +67,7 @@ public class RegistroParqueoTestDataBuilder {
 		return this;
 	}
 
-	public RegistroParqueo construirRegistroParqueo () {
+	public RegistroParqueo construirRegistroParqueo() {
 		return new RegistroParqueo(id, fechaIngreso, fechaSalida, tipoVehiculo, esMotoPesada, placa, valorFacturado);
-	}	
+	}
 }
-

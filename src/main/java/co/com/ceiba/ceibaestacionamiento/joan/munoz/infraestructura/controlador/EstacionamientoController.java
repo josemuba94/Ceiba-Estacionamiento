@@ -14,14 +14,15 @@ import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.servicios.Registr
 @CrossOrigin(origins = { "http://localhost:4200" })
 @RequestMapping("/api")
 public class EstacionamientoController {
+
+	public static final String URL_REGISTRAR_VEHICULO = "/registrarIngresoVehiculo";
 	
 	@Autowired
-	private RegistrarVehiculoService vigilanteService; 
-	
-	@PostMapping("/registrarIngresoVehiculo")
+	private RegistrarVehiculoService vigilanteService;
+
+	@PostMapping(URL_REGISTRAR_VEHICULO)
 	public RegistroParqueoDTO registrarIngresoVehiculo(@RequestBody RegistroParqueoDTO registroParqueoDTO) {
-		
-		 return vigilanteService.registrarIngresoVehiculo(registroParqueoDTO);
+		return vigilanteService.registrarIngresoVehiculo(registroParqueoDTO);
 	}
-	
+
 }

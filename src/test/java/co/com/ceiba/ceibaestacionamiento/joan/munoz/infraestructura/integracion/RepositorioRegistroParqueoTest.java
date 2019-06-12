@@ -21,34 +21,34 @@ import co.com.ceiba.ceibaestacionamiento.joan.munoz.testdatabuilder.RegistroParq
 @RunWith(SpringRunner.class)
 @TestPropertySource(locations = "classpath:application-test.properties")
 public class RepositorioRegistroParqueoTest {
-	
+
 	@Autowired
-	private RepositorioRegistroParqueo repositorioRegistroParqueo;	
+	private RepositorioRegistroParqueo repositorioRegistroParqueo;
 	@Autowired
 	private DominioFactory dominioFactory;
-	
+
 	@After
 	public void tearDown() {
 		repositorioRegistroParqueo.deleteAll();
 	}
-	
+
 	@Test
 	public void cantidadVehiculosPorTipoTest() {
 
-		// Arrange		
-		RegistroParqueoTestDataBuilder registroParqueoTestAfuera =
-				new RegistroParqueoTestDataBuilder(RegistroParqueoTestDataBuilder.CON_SALIDA_FACTURADA);
-		RegistroParqueoTestDataBuilder registroParqueoTestAdentro =
-				new RegistroParqueoTestDataBuilder(RegistroParqueoTestDataBuilder.SIN_SALIDA_FACTURADA);
-		
-		RegistroParqueoEntity registroParqueoAfuera  = dominioFactory.convertiraDominioEntidad(
-				registroParqueoTestAfuera.construirRegistroParqueo());
-		RegistroParqueoEntity registroParqueoAdentro = dominioFactory.convertiraDominioEntidad(
-				registroParqueoTestAdentro.construirRegistroParqueo());		
-		
+		// Arrange
+		RegistroParqueoTestDataBuilder registroParqueoTestAfuera = new RegistroParqueoTestDataBuilder(
+				RegistroParqueoTestDataBuilder.CON_SALIDA_FACTURADA);
+		RegistroParqueoTestDataBuilder registroParqueoTestAdentro = new RegistroParqueoTestDataBuilder(
+				RegistroParqueoTestDataBuilder.SIN_SALIDA_FACTURADA);
+
+		RegistroParqueoEntity registroParqueoAfuera = dominioFactory
+				.convertiraDominioEntidad(registroParqueoTestAfuera.construirRegistroParqueo());
+		RegistroParqueoEntity registroParqueoAdentro = dominioFactory
+				.convertiraDominioEntidad(registroParqueoTestAdentro.construirRegistroParqueo());
+
 		repositorioRegistroParqueo.saveAndFlush(registroParqueoAfuera);
 		repositorioRegistroParqueo.saveAndFlush(registroParqueoAdentro);
-		
+
 		// Act
 		int cantidadAdentro = repositorioRegistroParqueo.cantidadVehiculosPorTipo(TipoVehiculoEnum.MOTO.name());
 

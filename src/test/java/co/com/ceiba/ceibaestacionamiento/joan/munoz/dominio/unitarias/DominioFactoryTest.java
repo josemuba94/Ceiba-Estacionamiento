@@ -22,41 +22,40 @@ import co.com.ceiba.ceibaestacionamiento.joan.munoz.testdatabuilder.RegistroParq
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class DominioFactoryTest {
-	
+
 	@Autowired
 	private DominioFactory dominioFactory;
-	
+
 	@Test
 	public void convertiraDominioEntidadTest() {
-		
+
 		// Arrange
 		SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-		
+
 		RegistroParqueo registroParqueo = new RegistroParqueoTestDataBuilder(
-				RegistroParqueoTestDataBuilder.CON_SALIDA_FACTURADA)
-				.construirRegistroParqueo();
+				RegistroParqueoTestDataBuilder.CON_SALIDA_FACTURADA).construirRegistroParqueo();
 		String fechaIngresada = formatoFecha.format(registroParqueo.getFechaIngreso().getTime());
-		
+
 		// Act
 		RegistroParqueoEntity registroParqueoEntity = dominioFactory.convertiraDominioEntidad(registroParqueo);
-		String fechaObtenida = formatoFecha.format(registroParqueoEntity.getFechaIngreso().getTime());		
-		
-		// Assert	
+		String fechaObtenida = formatoFecha.format(registroParqueoEntity.getFechaIngreso().getTime());
+
+		// Assert
 		assertTrue(registroParqueoEntity.getId().equals(registroParqueo.getId()));
 		assertEquals(fechaIngresada, fechaObtenida);
 		assertEquals(registroParqueoEntity.getFechaSalida(), registroParqueo.getFechaSalida());
 		assertEquals(registroParqueoEntity.getTipoVehiculo(), registroParqueo.getTipoVehiculo().name());
-		assertTrue(registroParqueoEntity.getEsMotoPesada() == registroParqueo.getEsMotoPesada());		
+		assertTrue(registroParqueoEntity.getEsMotoPesada() == registroParqueo.getEsMotoPesada());
 		assertEquals(registroParqueoEntity.getPlaca(), registroParqueo.getPlaca());
 		assertTrue(registroParqueoEntity.getValorFacturado() == registroParqueo.getValorFacturado());
 	}
-	
+
 	@Test
 	public void convertirEntidadDominioTest() {
-		
+
 		// Arrange
 		SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-		
+
 		RegistroParqueoEntity registroParqueoEntity = new RegistroParqueoEntity();
 		registroParqueoEntity.setId(321L);
 		registroParqueoEntity.setFechaIngreso(new GregorianCalendar(2019, Calendar.JUNE, 10, 12, 10));
@@ -66,17 +65,17 @@ public class DominioFactoryTest {
 		registroParqueoEntity.setPlaca("LVS56");
 		registroParqueoEntity.setValorFacturado(1000);
 		String fechaIngresada = formatoFecha.format(registroParqueoEntity.getFechaIngreso().getTime());
-		
+
 		// Act
 		RegistroParqueo registroParqueo = dominioFactory.convertirEntidadDominio(registroParqueoEntity);
-		String fechaObtenida = formatoFecha.format(registroParqueo.getFechaIngreso().getTime());		
-		
-		// Assert	
+		String fechaObtenida = formatoFecha.format(registroParqueo.getFechaIngreso().getTime());
+
+		// Assert
 		assertTrue(registroParqueoEntity.getId().equals(registroParqueo.getId()));
 		assertEquals(fechaIngresada, fechaObtenida);
 		assertEquals(registroParqueoEntity.getFechaSalida(), registroParqueo.getFechaSalida());
 		assertEquals(registroParqueoEntity.getTipoVehiculo(), registroParqueo.getTipoVehiculo().name());
-		assertTrue(registroParqueoEntity.getEsMotoPesada() == registroParqueo.getEsMotoPesada());		
+		assertTrue(registroParqueoEntity.getEsMotoPesada() == registroParqueo.getEsMotoPesada());
 		assertEquals(registroParqueoEntity.getPlaca(), registroParqueo.getPlaca());
 		assertTrue(registroParqueoEntity.getValorFacturado() == registroParqueo.getValorFacturado());
 	}
