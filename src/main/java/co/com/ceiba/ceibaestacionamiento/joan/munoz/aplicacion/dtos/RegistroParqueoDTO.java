@@ -31,24 +31,12 @@ public class RegistroParqueoDTO {
 		return id;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 	public Calendar getFechaIngreso() {
 		return fechaIngreso;
 	}
 
-	public void setFechaIngreso(Calendar fechaIngreso) {
-		this.fechaIngreso = fechaIngreso;
-	}
-
 	public Calendar getFechaSalida() {
 		return fechaSalida;
-	}
-
-	public void setFechaSalida(Calendar fechaSalida) {
-		this.fechaSalida = fechaSalida;
 	}
 
 	public String getTipoVehiculo() {
@@ -78,9 +66,4 @@ public class RegistroParqueoDTO {
 	public double getValorFacturado() {
 		return valorFacturado;
 	}
-
-	public void setValorFacturado(double valorFacturado) {
-		this.valorFacturado = valorFacturado;
-	}
-
 }
