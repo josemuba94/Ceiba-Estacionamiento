@@ -24,7 +24,7 @@ import co.com.ceiba.ceibaestacionamiento.joan.munoz.testdatabuilder.RegistroParq
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-@Transactional()
+@Transactional
 @TestPropertySource(locations = "classpath:application-test.properties")
 public class VigilanteTest {
 
@@ -62,7 +62,7 @@ public class VigilanteTest {
 			fail();
 		} catch (EstacionamientoException excepcion) {
 			// Assert
-			assertEquals(Vigilante.VEHICULO_NO_INGRESADO, excepcion.getMessage());
+			assertTrue(excepcion.getMessage().indexOf(Vigilante.VEHICULO_NO_INGRESADO) != -1);
 		}
 	}
 
