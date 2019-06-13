@@ -11,4 +11,7 @@ public interface RepositorioRegistroParqueo extends JpaRepository<RegistroParque
 
 	@Query(value = "select count(r.tipo_Vehiculo) FROM Registros_Parqueo r where r.fecha_Salida is null and r.tipo_Vehiculo=?1 ", nativeQuery = true)
 	public int cantidadVehiculosPorTipo(String tipo);
+	
+	@Query(value = "select * FROM Registros_Parqueo r where r.fecha_Salida is null and r.placa=?1 ", nativeQuery = true)
+	public RegistroParqueoEntity buscarVehiculoIngresado(String placa);
 }

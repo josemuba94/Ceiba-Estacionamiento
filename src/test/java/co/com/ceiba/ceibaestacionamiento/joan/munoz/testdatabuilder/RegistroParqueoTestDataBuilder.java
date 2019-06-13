@@ -23,7 +23,7 @@ public class RegistroParqueoTestDataBuilder {
 		this.fechaIngreso = new GregorianCalendar(2019, Calendar.JUNE, 11, 12, 22);
 		this.tipoVehiculo = TipoVehiculoEnum.MOTO;
 		this.esMotoPesada = 'S';
-		this.placa = "VKY61C";
+		this.placa = "DTN28C";
 
 		if (salidaFacturada) {
 			this.id = 123L;

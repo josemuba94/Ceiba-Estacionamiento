@@ -3,6 +3,9 @@ package co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.unitarias;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -33,11 +36,11 @@ public class VigilanteTest {
 				RegistroParqueoTestDataBuilder.SIN_SALIDA_FACTURADA).conPlaca("AKY12A").construirRegistroParqueo();
 		try {
 			// Act
-			vigilante.realizarValidacionesIngreso(registroParqueo);
+			vigilante.validarDiaHabil(registroParqueo);
 			fail();
-		} catch (EstacionamientoException e) {
+		} catch (EstacionamientoException excepcion) {
 			// Assert
-			assertEquals(Vigilante.DIA_NO_HABIL, e.getMessage());
+			assertEquals(Vigilante.DIA_NO_HABIL, excepcion.getMessage());
 		}
 	}
 
@@ -49,14 +52,13 @@ public class VigilanteTest {
 
 		when(repositorioRegistroParqueo.cantidadVehiculosPorTipo(registroParqueo.getTipoVehiculo().name()))
 				.thenReturn(Vigilante.CUPO_MOTOS);
-
 		try {
 			// Act
-			vigilante.realizarValidacionesIngreso(registroParqueo);
+			vigilante.validarCupo(registroParqueo);
 			fail();
-		} catch (EstacionamientoException e) {
+		} catch (EstacionamientoException excepcion) {
 			// Assert
-			assertEquals(Vigilante.MOTOS_SIN_CUPO, e.getMessage());
+			assertEquals(Vigilante.MOTOS_SIN_CUPO, excepcion.getMessage());
 		}
 	}
 
@@ -69,14 +71,55 @@ public class VigilanteTest {
 
 		when(repositorioRegistroParqueo.cantidadVehiculosPorTipo(registroParqueo.getTipoVehiculo().name()))
 				.thenReturn(Vigilante.CUPO_CARROS);
-
 		try {
 			// Act
-			vigilante.realizarValidacionesIngreso(registroParqueo);
+			vigilante.validarCupo(registroParqueo);
 			fail();
-		} catch (EstacionamientoException e) {
+		} catch (EstacionamientoException excepcion) {
 			// Assert
-			assertEquals(Vigilante.CARROS_SIN_CUPO, e.getMessage());
+			assertEquals(Vigilante.CARROS_SIN_CUPO, excepcion.getMessage());
 		}
+	}
+
+	@Test
+	public void calcularValorMotoPesadaTest() {
+		// Arrange
+		Calendar fechaIngreso = new GregorianCalendar(2019, Calendar.JUNE, 13, 13, 13);
+		Calendar fechaSalida  = new GregorianCalendar(2019, Calendar.JUNE, 15, 15, 15);
+		
+		// Act
+		double valorFacturado = vigilante.calcularValorFacturado(fechaIngreso, fechaSalida, TipoVehiculoEnum.MOTO, 'S');
+		
+		// Assert
+		assertTrue(11500 == valorFacturado);
+	}
+	
+	@Test
+	public void calcularValorCarroTest() {
+		// Arrange
+		Calendar fechaIngreso = new GregorianCalendar(2019, Calendar.JUNE, 14, 13, 13);
+		Calendar fechaSalida  = new GregorianCalendar(2019, Calendar.JUNE, 15, 15, 27);
+		
+		// Act
+		double valorFacturado = vigilante.calcularValorFacturado(fechaIngreso, fechaSalida, TipoVehiculoEnum.CARRO, 'N');
+		
+		// Assert
+		assertTrue(11000 == valorFacturado);
+	}
+
+	@Test
+	public void obtenerRegistroCalculadoTest() {
+		// Arrange
+		Calendar fechaIngreso = new GregorianCalendar(2019, Calendar.JUNE, 13, 13, 13);
+		Calendar fechaSalida  = new GregorianCalendar(2019, Calendar.JUNE, 15, 15, 15);
+		
+		RegistroParqueo registroParqueo = new RegistroParqueoTestDataBuilder(
+				RegistroParqueoTestDataBuilder.SIN_SALIDA_FACTURADA).conFechaIngreso(fechaIngreso)
+					.conFechaSalida(fechaSalida).construirRegistroParqueo();		
+		// Act
+		RegistroParqueo registroCalculado = vigilante.obtenerRegistroCalculado(registroParqueo);
+		
+		// Assert
+		assertTrue(11500 == registroCalculado.getValorFacturado());
 	}
 }

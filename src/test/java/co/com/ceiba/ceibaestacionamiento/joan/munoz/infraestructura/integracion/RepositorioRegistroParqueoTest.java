@@ -1,9 +1,12 @@
 package co.com.ceiba.ceibaestacionamiento.joan.munoz.infraestructura.integracion;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,24 +30,20 @@ public class RepositorioRegistroParqueoTest {
 	@Autowired
 	private DominioFactory dominioFactory;
 
-	@After
-	public void tearDown() {
+	@Before
+	public void setUp() {
 		repositorioRegistroParqueo.deleteAll();
 	}
 
 	@Test
 	public void cantidadVehiculosPorTipoTest() {
-
 		// Arrange
-		RegistroParqueoTestDataBuilder registroParqueoTestAfuera = new RegistroParqueoTestDataBuilder(
-				RegistroParqueoTestDataBuilder.CON_SALIDA_FACTURADA);
-		RegistroParqueoTestDataBuilder registroParqueoTestAdentro = new RegistroParqueoTestDataBuilder(
-				RegistroParqueoTestDataBuilder.SIN_SALIDA_FACTURADA);
-
-		RegistroParqueoEntity registroParqueoAfuera = dominioFactory
-				.convertiraDominioEntidad(registroParqueoTestAfuera.construirRegistroParqueo());
-		RegistroParqueoEntity registroParqueoAdentro = dominioFactory
-				.convertiraDominioEntidad(registroParqueoTestAdentro.construirRegistroParqueo());
+		RegistroParqueoEntity registroParqueoAfuera = dominioFactory.convertiraDominioEntidad(
+				new RegistroParqueoTestDataBuilder(RegistroParqueoTestDataBuilder.CON_SALIDA_FACTURADA)
+						.construirRegistroParqueo());
+		RegistroParqueoEntity registroParqueoAdentro = dominioFactory.convertiraDominioEntidad(
+				new RegistroParqueoTestDataBuilder(RegistroParqueoTestDataBuilder.SIN_SALIDA_FACTURADA)
+						.construirRegistroParqueo());
 
 		repositorioRegistroParqueo.saveAndFlush(registroParqueoAfuera);
 		repositorioRegistroParqueo.saveAndFlush(registroParqueoAdentro);
@@ -55,5 +54,28 @@ public class RepositorioRegistroParqueoTest {
 		// Assert
 		assertFalse(cantidadAdentro == 2);
 		assertTrue(cantidadAdentro == 1);
+	}
+
+	@Test
+	public void buscarVehiculoIngresadoTest() {
+		// Arrange
+		RegistroParqueoEntity registroParqueo = dominioFactory.convertiraDominioEntidad(
+				new RegistroParqueoTestDataBuilder(RegistroParqueoTestDataBuilder.SIN_SALIDA_FACTURADA)
+						.construirRegistroParqueo());
+
+		repositorioRegistroParqueo.saveAndFlush(registroParqueo);
+
+		// Act
+		RegistroParqueoEntity registroParqueoAlmacenado = repositorioRegistroParqueo
+				.buscarVehiculoIngresado(registroParqueo.getPlaca());
+
+		// Assert
+		assertNotNull(registroParqueoAlmacenado.getId());
+		assertEquals(registroParqueoAlmacenado.getFechaIngreso(), registroParqueo.getFechaIngreso());
+		assertNull(registroParqueoAlmacenado.getFechaSalida());
+		assertEquals(registroParqueoAlmacenado.getTipoVehiculo(), registroParqueo.getTipoVehiculo());
+		assertTrue(registroParqueoAlmacenado.getEsMotoPesada() == registroParqueo.getEsMotoPesada());
+		assertEquals(registroParqueoAlmacenado.getPlaca(), registroParqueo.getPlaca());
+		assertTrue(registroParqueoAlmacenado.getValorFacturado() == 0.0);
 	}
 }
