@@ -46,6 +46,7 @@ public class EstacionamientoControllerTest {
 	public void tearDown() {
 		repositorioRegistroParqueo.deleteAll();
 	}
+	
 	@Test
 	public void registrarIngresoVehiculoTest() {
 		// Arrange
