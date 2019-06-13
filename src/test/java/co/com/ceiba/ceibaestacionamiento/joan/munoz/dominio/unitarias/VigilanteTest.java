@@ -6,6 +6,8 @@ import static org.mockito.Mockito.when;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import javax.transaction.Transactional;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -21,6 +23,7 @@ import co.com.ceiba.ceibaestacionamiento.joan.munoz.infraestructura.repositorio.
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.testdatabuilder.RegistroParqueoTestDataBuilder;
 
 @SpringBootTest
+@Transactional
 @RunWith(SpringRunner.class)
 public class VigilanteTest {
 

@@ -1,10 +1,12 @@
-package co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.integracion;
+package co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.unitarias;
 
 import static org.junit.Assert.*;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+
+import javax.transaction.Transactional;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,6 +26,7 @@ import co.com.ceiba.ceibaestacionamiento.joan.munoz.testdatabuilder.RegistroParq
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
+@Transactional
 @TestPropertySource(locations = "classpath:application-test.properties")
 public class VigilanteServiceTest {
 

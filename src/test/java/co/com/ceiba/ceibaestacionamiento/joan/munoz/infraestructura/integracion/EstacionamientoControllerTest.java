@@ -7,6 +7,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.nio.charset.Charset;
 
+import javax.transaction.Transactional;
+
 import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
@@ -25,6 +27,7 @@ import co.com.ceiba.ceibaestacionamiento.joan.munoz.infraestructura.repositorio.
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
+@Transactional
 @TestPropertySource(locations = "classpath:application-test.properties")
 public class EstacionamientoControllerTest {
 

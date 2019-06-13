@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.excepciones.EstacionamientoException;
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.modelo.IVigilante;
@@ -23,6 +24,7 @@ import co.com.ceiba.ceibaestacionamiento.joan.munoz.testdatabuilder.RegistroParq
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
+@Transactional()
 @TestPropertySource(locations = "classpath:application-test.properties")
 public class VigilanteTest {
 

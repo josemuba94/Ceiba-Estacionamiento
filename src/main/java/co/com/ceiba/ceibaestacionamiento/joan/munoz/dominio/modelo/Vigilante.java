@@ -46,10 +46,9 @@ public class Vigilante implements IVigilante {
 	}
 
 	public void validarDiaHabil(RegistroParqueo registroParqueo) {
-		String placa = registroParqueo.getPlaca();
-
-		if (placa.charAt(0) == 'A') {
+		if (registroParqueo.getPlaca().charAt(0) == 'A') {
 			Calendar fechaActual = registroParqueo.getFechaIngreso();
+
 			if (fechaActual.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY
 					&& fechaActual.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY)
 				throw new EstacionamientoException(DIA_NO_HABIL);
@@ -68,14 +67,14 @@ public class Vigilante implements IVigilante {
 
 	@Override
 	public RegistroParqueo calcularSalida(String placa) {
-		RegistroParqueoEntity registroParqueoEntity = repositorioRegistroParqueo.buscarVehiculoIngresado(placa);		
+		RegistroParqueoEntity registroParqueoEntity = repositorioRegistroParqueo.buscarVehiculoIngresado(placa);
 		try {
-			RegistroParqueo registroParqueoEncontrado = dominioFactory.convertirEntidadDominio(registroParqueoEntity);			
+			RegistroParqueo registroParqueoEncontrado = dominioFactory.convertirEntidadDominio(registroParqueoEntity);
 			registroParqueoEncontrado.setFechaSalida(Calendar.getInstance());
-			
-			return obtenerRegistroCalculado(registroParqueoEncontrado);			
-		} catch (Exception e) {
-			throw new EstacionamientoException(VEHICULO_NO_INGRESADO);
+
+			return obtenerRegistroCalculado(registroParqueoEncontrado);
+		} catch (Exception exception) {
+			throw new EstacionamientoException(exception.getMessage() + ": " + VEHICULO_NO_INGRESADO);
 		}
 	}
 
@@ -89,21 +88,22 @@ public class Vigilante implements IVigilante {
 
 	public double calcularValorFacturado(Calendar fechaIngreso, Calendar fechaSalida, TipoVehiculoEnum tipoVehiculo,
 			char esMotoPesada) {
-		
+
 		final long miliSegundosPorHora = 3600000;
 		final long miliSegundosPorDia = miliSegundosPorHora * 24;
 
 		long diferencia = fechaSalida.getTimeInMillis() - fechaIngreso.getTimeInMillis();
 		int dias = (int) (diferencia / miliSegundosPorDia);
-		diferencia = diferencia - (dias*miliSegundosPorDia);
+		diferencia = diferencia - (dias * miliSegundosPorDia);
 		int horas = (int) (diferencia / miliSegundosPorHora);
-		diferencia = diferencia - (horas*miliSegundosPorHora);
+		diferencia = diferencia - (horas * miliSegundosPorHora);
 		if (diferencia % miliSegundosPorHora > 0)
 			horas++;
 
-		double valorFacturado = tipoVehiculo.equals(TipoVehiculoEnum.MOTO) ? dias * VALOR_DIA_MOTO + horas * VALOR_HORA_MOTO
+		double valorFacturado = tipoVehiculo.equals(TipoVehiculoEnum.MOTO)
+				? dias * VALOR_DIA_MOTO + horas * VALOR_HORA_MOTO
 				: dias * VALOR_DIA_CARRO + horas * VALOR_HORA_CARRO;
-				
+
 		return (esMotoPesada == 'S') ? valorFacturado + ADICION_MOTO_PESADA : valorFacturado;
 	}
 }
