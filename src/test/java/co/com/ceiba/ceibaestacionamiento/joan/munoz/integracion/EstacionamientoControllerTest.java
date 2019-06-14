@@ -76,8 +76,9 @@ public class EstacionamientoControllerTest {
 					.andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 
 			JSONObject json = new JSONObject(respuesta);
-
+			
 			// Assert
+			assertEquals(101, json.getLong("id"));
 			assertEquals("BKY61C", json.getString(PLACA));
 
 		} catch (Exception exception) {

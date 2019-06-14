@@ -38,9 +38,9 @@ public class Vigilante {
 	public RegistroParqueo ingresarVehiculo(SolicitudIngreso solicitudIngreso) {
 		try {
 			repositorioRegistroParqueo.buscarVehiculoIngresado(solicitudIngreso.getPlaca());
-			throw new EstacionamientoException(PLACA_DUPLICADA);			
+			throw new EstacionamientoException(PLACA_DUPLICADA);
 		} catch (EstacionamientoException exception) {
-			if(exception.getMessage().equals(PLACA_DUPLICADA))
+			if (exception.getMessage().equals(PLACA_DUPLICADA))
 				throw exception;
 		}
 
@@ -55,13 +55,9 @@ public class Vigilante {
 	}
 
 	public void validarDiaHabil(SolicitudIngreso solicitudIngreso) {
-		if (solicitudIngreso.getPlaca().charAt(0) == 'A') {
-			Calendar fecha = solicitudIngreso.getFecha();
-
-			if (fecha.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY
-					&& fecha.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY)
-				throw new EstacionamientoException(DIA_NO_HABIL);
-		}
+		if (solicitudIngreso.getPlaca().startsWith("A")
+				&& solicitudIngreso.getFecha().get(Calendar.DAY_OF_WEEK) > Calendar.MONDAY)
+			throw new EstacionamientoException(DIA_NO_HABIL);
 	}
 
 	public void validarCupo(SolicitudIngreso solicitudIngreso) {
