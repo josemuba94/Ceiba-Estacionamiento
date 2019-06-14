@@ -19,7 +19,6 @@ import co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.modelo.SolicitudIngr
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.modelo.TipoVehiculoEnum;
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.modelo.Vigilante;
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.repositorio.RepositorioRegistroParqueo;
-import co.com.ceiba.ceibaestacionamiento.joan.munoz.infraestructura.repositorio.RepositorioRegistroH2;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)

@@ -15,7 +15,6 @@ import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.dtos.SolicitudIng
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.servicios.CalcularSalidaService;
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.servicios.IngresarVehiculoService;
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.servicios.SacarVehiculoService;
-import co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.modelo.SolicitudIngreso;
 
 @RestController
 @CrossOrigin(origins = { "http://localhost:4200" })

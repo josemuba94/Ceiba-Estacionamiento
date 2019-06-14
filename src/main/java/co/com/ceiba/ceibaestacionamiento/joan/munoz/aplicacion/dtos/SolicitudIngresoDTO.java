@@ -2,8 +2,6 @@ package co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.dtos;
 
 import java.util.Calendar;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,15 +14,7 @@ public class SolicitudIngresoDTO {
 	private char esMotoAltoCilindraje;
 	private Calendar fecha;
 	
-	public SolicitudIngresoDTO() {
+	public SolicitudIngresoDTO() { // Se pone obligatorio por Spring
 		
-	}
-	
-	@Autowired
-	public SolicitudIngresoDTO(String tipoVehiculo, String placa, char esMotoAltoCilindraje, Calendar fecha) {
-		this.tipoVehiculo = tipoVehiculo;
-		this.placa = placa;
-		this.esMotoAltoCilindraje = esMotoAltoCilindraje;
-		this.fecha = fecha;
 	}
 }
