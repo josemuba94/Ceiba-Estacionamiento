@@ -14,7 +14,7 @@ public class SolicitudIngresoDTO {
 	private char esMotoAltoCilindraje;
 	private Calendar fecha;
 	
-	public SolicitudIngresoDTO() { // Se pone obligatorio por Spring
+	public SolicitudIngresoDTO() { // Requerido por el framework
 		
 	}
 }

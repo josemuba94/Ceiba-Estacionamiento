@@ -17,7 +17,7 @@ public class RegistroParqueoDTO {
 	private String placa;
 	private double valor;
 	
-	public RegistroParqueoDTO() {
+	public RegistroParqueoDTO() { // Requerido por el framework
 
 	}
 

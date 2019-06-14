@@ -5,6 +5,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -103,5 +104,18 @@ public class VigilanteTest {
 		
 		// Assert
 		assertTrue(11000 == valorFacturado);
+	}
+	
+	@Test
+	public void darTiposVehiculoTest() {
+		// Arrange
+		List<String> tiposVehiculo;
+		
+		// Act
+		tiposVehiculo = vigilante.darTiposVehiculo();
+		
+		// Assert
+		assertEquals(TipoVehiculoEnum.CARRO.name(), tiposVehiculo.get(0));
+		assertEquals(TipoVehiculoEnum.MOTO.name(), tiposVehiculo.get(1));
 	}
 }

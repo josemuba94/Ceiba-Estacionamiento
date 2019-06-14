@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.dtos.EstadoEstacionamientoDTO;
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.dtos.RegistroParqueoDTO;
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.dtos.SolicitudIngresoDTO;
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.servicios.CalcularSalidaService;
+import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.servicios.DarEstadoEstacionamiento;
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.servicios.IngresarVehiculoService;
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.servicios.SacarVehiculoService;
 
@@ -24,6 +26,7 @@ public class EstacionamientoController {
 	public static final String URL_INGRESAR_VEHICULO = "/ingresarVehiculo";
 	public static final String URL_CALCULAR_SALIDA   = "/calcularSalida/{placa}";
 	public static final String URL_SACAR_VEHICULO    = "/sacarVehiculo";
+	public static final String URL_DAR_ESTADO        = "/darEstado";
 	
 	@Autowired
 	private IngresarVehiculoService vigilanteIngresarService;
@@ -31,6 +34,8 @@ public class EstacionamientoController {
 	private CalcularSalidaService vigilanteCalcularService;
 	@Autowired
 	private SacarVehiculoService vigilanteSacarService;
+	@Autowired
+	private DarEstadoEstacionamiento vigilanteDarEstadoService;
 
 	@PostMapping(URL_INGRESAR_VEHICULO)
 	public RegistroParqueoDTO ingresarVehiculo(@RequestBody SolicitudIngresoDTO solicitudIngresoDTO) {
@@ -45,6 +50,11 @@ public class EstacionamientoController {
 	@PutMapping(URL_SACAR_VEHICULO) 
 	public RegistroParqueoDTO sacarVehiculo(@RequestBody RegistroParqueoDTO registroParqueoDTO) {
 		return vigilanteSacarService.sacarVehiculo(registroParqueoDTO);		
+	}
+	
+	@GetMapping(URL_DAR_ESTADO)
+	public EstadoEstacionamientoDTO darEstadoEstacionamiento () {
+		return vigilanteDarEstadoService.darVehiculosIngresados();	
 	}
 	
 	

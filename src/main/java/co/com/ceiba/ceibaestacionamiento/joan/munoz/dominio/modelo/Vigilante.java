@@ -1,6 +1,9 @@
 package co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.modelo;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +17,7 @@ public class Vigilante {
 	public static final String MOTOS_SIN_CUPO = "Actualmente no hay espacio disponible para motos.";
 	public static final String CARROS_SIN_CUPO = "Actualmente no hay espacio disponible para carros.";
 	public static final String DIA_NO_HABIL = "El vehículo no puede ingresar porque no es un día hábil.";
+	public static final String PLACA_DUPLICADA = "Actualmente hay un vehículo ingresado con la misma placa.";
 
 	public static final int CUPO_MOTOS = 10;
 	public static final int CUPO_CARROS = 20;
@@ -32,6 +36,14 @@ public class Vigilante {
 	}
 
 	public RegistroParqueo ingresarVehiculo(SolicitudIngreso solicitudIngreso) {
+		try {
+			repositorioRegistroParqueo.buscarVehiculoIngresado(solicitudIngreso.getPlaca());
+			throw new EstacionamientoException(PLACA_DUPLICADA);			
+		} catch (EstacionamientoException exception) {
+			if(exception.getMessage().equals(PLACA_DUPLICADA))
+				throw exception;
+		}
+
 		validarDiaHabil(solicitudIngreso);
 		validarCupo(solicitudIngreso);
 
@@ -97,4 +109,17 @@ public class Vigilante {
 	public RegistroParqueo sacarVehiculo(RegistroParqueo registroParqueo) {
 		return repositorioRegistroParqueo.guardarRegistroParqueo(registroParqueo);
 	}
+
+	public List<RegistroParqueo> darVehiculosIngresados() {
+		return repositorioRegistroParqueo.darVehiculosIngresados();
+	}
+
+	public List<String> darTiposVehiculo() {
+		List<String> tiposVehiculo = new ArrayList<>();
+
+		Arrays.asList(TipoVehiculoEnum.values()).forEach(tipoVehiculo -> tiposVehiculo.add(tipoVehiculo.name()));
+
+		return tiposVehiculo;
+	}
+
 }

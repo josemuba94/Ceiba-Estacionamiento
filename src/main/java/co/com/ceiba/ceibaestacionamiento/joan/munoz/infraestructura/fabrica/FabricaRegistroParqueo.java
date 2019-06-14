@@ -1,5 +1,8 @@
 package co.com.ceiba.ceibaestacionamiento.joan.munoz.infraestructura.fabrica;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.modelo.RegistroParqueo;
@@ -26,6 +29,16 @@ public class FabricaRegistroParqueo {
 				registroParqueoEntity.getFechaSalida(), registroParqueoEntity.getTipoVehiculo(),
 				registroParqueoEntity.getEsMotoAltoCilindraje(), registroParqueoEntity.getPlaca(),
 				registroParqueoEntity.getValor());
+	}
+
+	public List <RegistroParqueo> convertirListEntityListDominio(List<RegistroParqueoEntity> listadoVehiculosEntity) {
+		List <RegistroParqueo> listadoVehiculos = new ArrayList<>();
+		
+		int cantidadVehiculos = listadoVehiculosEntity.size();
+		for(int i = 0; i < cantidadVehiculos; i++) 
+			listadoVehiculos.add(convertirEntidadDominio(listadoVehiculosEntity.get(i)));		
+		
+		return listadoVehiculos;
 	}
 
 }

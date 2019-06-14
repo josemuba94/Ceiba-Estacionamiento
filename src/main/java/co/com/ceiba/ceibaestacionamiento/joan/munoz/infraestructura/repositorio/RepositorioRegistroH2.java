@@ -1,5 +1,7 @@
 package co.com.ceiba.ceibaestacionamiento.joan.munoz.infraestructura.repositorio;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -38,6 +40,12 @@ public class RepositorioRegistroH2 implements RepositorioRegistroParqueo {
 			throw new EstacionamientoException(VEHICULO_NO_INGRESADO);
 		
 		return fabricaRegistroParqueo.convertirEntidadDominio(registroParqueoEntity);
+	}
+
+	@Override
+	public List<RegistroParqueo> darVehiculosIngresados() {
+		List<RegistroParqueoEntity> listadoVehiculosEntity = repositorioRegistroParqueoJPA.darVehiculosIngresados();
+		return fabricaRegistroParqueo.convertirListEntityListDominio(listadoVehiculosEntity);
 	}
 
 }

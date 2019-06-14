@@ -1,8 +1,11 @@
 package co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.servicios;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.dtos.EstadoEstacionamientoDTO;
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.dtos.RegistroParqueoDTO;
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.dtos.SolicitudIngresoDTO;
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.fabricas.FabricaRegistroParqueoDTO;
@@ -11,7 +14,8 @@ import co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.modelo.RegistroParqu
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.modelo.Vigilante;
 
 @Service
-public class VigilanteService implements IngresarVehiculoService, CalcularSalidaService, SacarVehiculoService {
+public class VigilanteService
+		implements IngresarVehiculoService, CalcularSalidaService, SacarVehiculoService, DarEstadoEstacionamiento {
 
 	@Autowired
 	private Vigilante vigilante;
@@ -37,5 +41,12 @@ public class VigilanteService implements IngresarVehiculoService, CalcularSalida
 	public RegistroParqueoDTO sacarVehiculo(RegistroParqueoDTO registroParqueoDTO) {
 		RegistroParqueo registroParqueo = fabricaRegistroParqueoDTO.convertirDTODominio(registroParqueoDTO);
 		return fabricaRegistroParqueoDTO.convertirDominioDTO(vigilante.sacarVehiculo(registroParqueo));
+	}
+
+	@Override
+	public EstadoEstacionamientoDTO darVehiculosIngresados() {
+		List<String> tiposVehiculo = vigilante.darTiposVehiculo();
+		List<RegistroParqueo> vehiculosIngresados = vigilante.darVehiculosIngresados();
+		return new EstadoEstacionamientoDTO(tiposVehiculo, vehiculosIngresados);
 	}
 }

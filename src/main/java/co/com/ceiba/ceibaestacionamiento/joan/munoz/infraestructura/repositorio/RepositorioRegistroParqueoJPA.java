@@ -1,5 +1,7 @@
 package co.com.ceiba.ceibaestacionamiento.joan.munoz.infraestructura.repositorio;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -14,4 +16,7 @@ public interface RepositorioRegistroParqueoJPA extends JpaRepository<RegistroPar
 	
 	@Query(value = "select * FROM Registros_Parqueo r where r.fecha_Salida is null and r.placa=?1 ", nativeQuery = true)
 	public RegistroParqueoEntity buscarVehiculoIngresado(String placa);
+
+	@Query(value = "select * FROM Registros_Parqueo r where r.fecha_Salida is null", nativeQuery = true)
+	public List<RegistroParqueoEntity> darVehiculosIngresados(); 
 }
