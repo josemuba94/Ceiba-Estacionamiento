@@ -6,17 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.excepciones.EstacionamientoException;
-import co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.fabrica.DominioFactory;
-import co.com.ceiba.ceibaestacionamiento.joan.munoz.infraestructura.entidades.RegistroParqueoEntity;
-import co.com.ceiba.ceibaestacionamiento.joan.munoz.infraestructura.repositorio.RepositorioRegistroParqueo;
+import co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.repositorio.RepositorioRegistroParqueo;
 
 @Service
-public class Vigilante implements IVigilante {
+public class Vigilante {
 
 	public static final String MOTOS_SIN_CUPO = "Actualmente no hay espacio disponible para motos.";
 	public static final String CARROS_SIN_CUPO = "Actualmente no hay espacio disponible para carros.";
 	public static final String DIA_NO_HABIL = "El vehículo no puede ingresar porque no es un día hábil.";
-	public static final String VEHICULO_NO_INGRESADO = "El vehículo no se encuentra dentro del estacionamiento.";
 
 	public static final int CUPO_MOTOS = 10;
 	public static final int CUPO_CARROS = 20;
@@ -27,67 +24,57 @@ public class Vigilante implements IVigilante {
 	public static final double VALOR_HORA_CARRO = 1000;
 	public static final double ADICION_MOTO_PESADA = 2000;
 
-	@Autowired
 	private RepositorioRegistroParqueo repositorioRegistroParqueo;
+
 	@Autowired
-	private DominioFactory dominioFactory;
-
-	@Override
-	public RegistroParqueo registrarIngresoVehiculo(RegistroParqueo registroParqueo) {
-		registroParqueo.setFechaIngreso(Calendar.getInstance());
-
-		validarDiaHabil(registroParqueo);
-		validarCupo(registroParqueo);
-
-		RegistroParqueoEntity registroParqueoEntity = dominioFactory.convertiraDominioEntidad(registroParqueo);
-		RegistroParqueoEntity registroParqueoAlmacenado = repositorioRegistroParqueo
-				.saveAndFlush(registroParqueoEntity);
-		return dominioFactory.convertirEntidadDominio(registroParqueoAlmacenado);
+	public Vigilante(RepositorioRegistroParqueo repositorioRegistroParqueo) {
+		this.repositorioRegistroParqueo = repositorioRegistroParqueo;
 	}
 
-	public void validarDiaHabil(RegistroParqueo registroParqueo) {
-		if (registroParqueo.getPlaca().charAt(0) == 'A') {
-			Calendar fechaActual = registroParqueo.getFechaIngreso();
+	public RegistroParqueo ingresarVehiculo(SolicitudIngreso solicitudIngreso) {
+		validarDiaHabil(solicitudIngreso);
+		validarCupo(solicitudIngreso);
 
-			if (fechaActual.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY
-					&& fechaActual.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY)
+		RegistroParqueo registroParqueo = new RegistroParqueo(null, solicitudIngreso.getFecha(), null,
+				solicitudIngreso.getTipoVehiculo(), solicitudIngreso.getEsMotoAltoCilindraje(),
+				solicitudIngreso.getPlaca(), 0.0);
+
+		return repositorioRegistroParqueo.guardarRegistroParqueo(registroParqueo);
+	}
+
+	public void validarDiaHabil(SolicitudIngreso solicitudIngreso) {
+		if (solicitudIngreso.getPlaca().charAt(0) == 'A') {
+			Calendar fecha = solicitudIngreso.getFecha();
+
+			if (fecha.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY
+					&& fecha.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY)
 				throw new EstacionamientoException(DIA_NO_HABIL);
 		}
 	}
 
-	public void validarCupo(RegistroParqueo registroParqueo) {
-		TipoVehiculoEnum tipo = registroParqueo.getTipoVehiculo();
+	public void validarCupo(SolicitudIngreso solicitudIngreso) {
+		String tipo = solicitudIngreso.getTipoVehiculo();
+		int cantidadVehiculos = repositorioRegistroParqueo.cantidadVehiculosPorTipo(tipo);
 
-		int cantidadVehiculos = repositorioRegistroParqueo.cantidadVehiculosPorTipo(tipo.name());
-		if (tipo.equals(TipoVehiculoEnum.MOTO) && cantidadVehiculos == CUPO_MOTOS)
+		if (tipo.equals(TipoVehiculoEnum.MOTO.name()) && cantidadVehiculos == CUPO_MOTOS)
 			throw new EstacionamientoException(MOTOS_SIN_CUPO);
-		if (tipo.equals(TipoVehiculoEnum.CARRO) && cantidadVehiculos == CUPO_CARROS)
+		if (tipo.equals(TipoVehiculoEnum.CARRO.name()) && cantidadVehiculos == CUPO_CARROS)
 			throw new EstacionamientoException(CARROS_SIN_CUPO);
 	}
 
-	@Override
 	public RegistroParqueo calcularSalida(String placa) {
-		RegistroParqueoEntity registroParqueoEntity = repositorioRegistroParqueo.buscarVehiculoIngresado(placa);
-		try {
-			RegistroParqueo registroParqueoEncontrado = dominioFactory.convertirEntidadDominio(registroParqueoEntity);
-			registroParqueoEncontrado.setFechaSalida(Calendar.getInstance());
+		RegistroParqueo registroParqueo = repositorioRegistroParqueo.buscarVehiculoIngresado(placa);
 
-			return obtenerRegistroCalculado(registroParqueoEncontrado);
-		} catch (Exception exception) {
-			throw new EstacionamientoException(exception.getMessage() + ": " + VEHICULO_NO_INGRESADO);
-		}
-	}
+		registroParqueo.setFechaSalida(Calendar.getInstance());
+		double valor = calcularValor(registroParqueo.getFechaIngreso(), registroParqueo.getFechaSalida(),
+				registroParqueo.getTipoVehiculo(), registroParqueo.getEsMotoAltoCilindraje());
 
-	public RegistroParqueo obtenerRegistroCalculado(RegistroParqueo registroParqueo) {
-		double valorFacturado = calcularValorFacturado(registroParqueo.getFechaIngreso(),
-				registroParqueo.getFechaSalida(), registroParqueo.getTipoVehiculo(), registroParqueo.getEsMotoPesada());
-
-		registroParqueo.setValorFacturado(valorFacturado);
+		registroParqueo.setValor(valor);
 		return registroParqueo;
 	}
 
-	public double calcularValorFacturado(Calendar fechaIngreso, Calendar fechaSalida, TipoVehiculoEnum tipoVehiculo,
-			char esMotoPesada) {
+	public double calcularValor(Calendar fechaIngreso, Calendar fechaSalida, String tipoVehiculo,
+			char esMotoAltoCilindraje) {
 
 		final long miliSegundosPorHora = 3600000;
 		final long miliSegundosPorDia = miliSegundosPorHora * 24;
@@ -100,10 +87,14 @@ public class Vigilante implements IVigilante {
 		if (diferencia % miliSegundosPorHora > 0)
 			horas++;
 
-		double valorFacturado = tipoVehiculo.equals(TipoVehiculoEnum.MOTO)
+		double valorFacturado = tipoVehiculo.equals(TipoVehiculoEnum.MOTO.name())
 				? dias * VALOR_DIA_MOTO + horas * VALOR_HORA_MOTO
 				: dias * VALOR_DIA_CARRO + horas * VALOR_HORA_CARRO;
 
-		return (esMotoPesada == 'S') ? valorFacturado + ADICION_MOTO_PESADA : valorFacturado;
+		return (esMotoAltoCilindraje == 'S') ? valorFacturado + ADICION_MOTO_PESADA : valorFacturado;
+	}
+
+	public RegistroParqueo sacarVehiculo(RegistroParqueo registroParqueo) {
+		return repositorioRegistroParqueo.guardarRegistroParqueo(registroParqueo);
 	}
 }

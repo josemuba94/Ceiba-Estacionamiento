@@ -34,9 +34,9 @@ public class RegistroParqueoEntity {
 	@NotNull
 	private String tipoVehiculo;
 	@NotNull
-	private char esMotoPesada;
+	private char esMotoAltoCilindraje;
 	@NotNull
 	private String placa;
-	private double valorFacturado;
+	private double valor;
 
 }

@@ -6,29 +6,24 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-@Setter
 public class RegistroParqueo {
 
 	private Long id;
 	private Calendar fechaIngreso;
-	private Calendar fechaSalida;
-	private TipoVehiculoEnum tipoVehiculo;
-	private char esMotoPesada;
+	@Setter private Calendar fechaSalida;
+	private String tipoVehiculo;
+	private char esMotoAltoCilindraje;
 	private String placa;
-	private double valorFacturado;
+	@Setter private double valor;
 
-	public RegistroParqueo() {
-
-	}
-
-	public RegistroParqueo(Long id, Calendar fechaIngreso, Calendar fechaSalida, TipoVehiculoEnum tipoVehiculo,
-			char esMotoPesada, String placa, double valorFacturado) {
+	public RegistroParqueo(Long id, Calendar fechaIngreso, Calendar fechaSalida, String tipoVehiculo,
+			char esMotoAltoCilindraje, String placa, double valor) {
 		this.id = id;
 		this.fechaIngreso = fechaIngreso;
 		this.fechaSalida = fechaSalida;
 		this.tipoVehiculo = tipoVehiculo;
-		this.esMotoPesada = esMotoPesada;
+		this.esMotoAltoCilindraje = esMotoAltoCilindraje;
 		this.placa = placa;
-		this.valorFacturado = valorFacturado;
+		this.valor = valor;
 	}
 }

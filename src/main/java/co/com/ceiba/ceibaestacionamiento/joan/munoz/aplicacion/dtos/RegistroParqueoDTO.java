@@ -13,22 +13,22 @@ public class RegistroParqueoDTO {
 	private Calendar fechaIngreso;
 	private Calendar fechaSalida;
 	private String tipoVehiculo;
-	private char esMotoPesada;
+	private char esMotoAltoCilindraje;
 	private String placa;
-	private double valorFacturado;
+	private double valor;
 	
 	public RegistroParqueoDTO() {
 
 	}
 
 	public RegistroParqueoDTO(Long id, Calendar fechaIngreso, Calendar fechaSalida, String tipoVehiculo,
-			char esMotoPesada, String placa, double valorFacturado) {
+			char esMotoAltoCilindraje, String placa, double valor) {
 		this.id = id;
 		this.fechaIngreso = fechaIngreso;
 		this.fechaSalida = fechaSalida;
 		this.tipoVehiculo = tipoVehiculo;
-		this.esMotoPesada = esMotoPesada;
+		this.esMotoAltoCilindraje = esMotoAltoCilindraje;
 		this.placa = placa;
-		this.valorFacturado = valorFacturado;
+		this.valor = valor;
 	}
 }

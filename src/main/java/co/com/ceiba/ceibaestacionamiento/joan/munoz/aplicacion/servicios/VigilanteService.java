@@ -4,29 +4,38 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.dtos.RegistroParqueoDTO;
-import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.fabrica.AplicacionFactory;
-import co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.modelo.IVigilante;
+import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.dtos.SolicitudIngresoDTO;
+import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.fabricas.FabricaRegistroParqueoDTO;
+import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.fabricas.FabricaSolicitudIngresoDTO;
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.modelo.RegistroParqueo;
+import co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.modelo.Vigilante;
 
 @Service
-public class VigilanteService implements RegistrarVehiculoService, CalcularSalidaService {
+public class VigilanteService implements IngresarVehiculoService, CalcularSalidaService, SacarVehiculoService {
 
 	@Autowired
-	private IVigilante vigilante;
+	private Vigilante vigilante;
 	@Autowired
-	private AplicacionFactory aplicacionFactory;
+	private FabricaRegistroParqueoDTO fabricaRegistroParqueoDTO;
+	@Autowired
+	private FabricaSolicitudIngresoDTO fabricaSolicitudIngreso;
 
 	@Override
-	public RegistroParqueoDTO registrarIngresoVehiculo(RegistroParqueoDTO registroParqueoDTO) {
-		RegistroParqueo registroParqueo = aplicacionFactory.convertirDTODominio(registroParqueoDTO);
-		RegistroParqueo registroParqueoAlmacenado = vigilante.registrarIngresoVehiculo(registroParqueo);
-		return aplicacionFactory.convertirDominioDTO(registroParqueoAlmacenado);
+	public RegistroParqueoDTO ingresarVehiculo(SolicitudIngresoDTO solicitudIngresoDTO) {
+		RegistroParqueo registroParqueoAlmacenado = vigilante
+				.ingresarVehiculo(fabricaSolicitudIngreso.convertirDTODominio(solicitudIngresoDTO));
+		return fabricaRegistroParqueoDTO.convertirDominioDTO(registroParqueoAlmacenado);
 	}
-	
+
 	@Override
 	public RegistroParqueoDTO calcularSalida(String placa) {
 		RegistroParqueo registroParqueoCalculado = vigilante.calcularSalida(placa);
-		return aplicacionFactory.convertirDominioDTO(registroParqueoCalculado);
+		return fabricaRegistroParqueoDTO.convertirDominioDTO(registroParqueoCalculado);
 	}
 
+	@Override
+	public RegistroParqueoDTO sacarVehiculo(RegistroParqueoDTO registroParqueoDTO) {
+		RegistroParqueo registroParqueo = fabricaRegistroParqueoDTO.convertirDTODominio(registroParqueoDTO);
+		return fabricaRegistroParqueoDTO.convertirDominioDTO(vigilante.sacarVehiculo(registroParqueo));
+	}
 }
