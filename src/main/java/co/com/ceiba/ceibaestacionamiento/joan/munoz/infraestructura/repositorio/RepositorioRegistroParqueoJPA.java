@@ -11,12 +11,12 @@ import co.com.ceiba.ceibaestacionamiento.joan.munoz.infraestructura.entidades.Re
 @Repository
 public interface RepositorioRegistroParqueoJPA extends JpaRepository<RegistroParqueoEntity, Long> {
 
-	@Query(value = "select count(r.tipo_Vehiculo) FROM Registros_Parqueo r where r.fecha_Salida is null and r.tipo_Vehiculo=?1 ", nativeQuery = true)
+	@Query(value = "select count(r.tipoVehiculo) FROM RegistroParqueoEntity r where r.fechaSalida is null and r.tipoVehiculo=?1")
 	public int cantidadVehiculosPorTipo(String tipo);
-	
-	@Query(value = "select * FROM Registros_Parqueo r where r.fecha_Salida is null and r.placa=?1 ", nativeQuery = true)
+
+	@Query(value = "select r FROM RegistroParqueoEntity r where r.fechaSalida is null and r.placa=?1")
 	public RegistroParqueoEntity buscarVehiculoIngresado(String placa);
 
-	@Query(value = "select * FROM Registros_Parqueo r where r.fecha_Salida is null", nativeQuery = true)
-	public List<RegistroParqueoEntity> darVehiculosIngresados(); 
+	@Query(value = "select r FROM RegistroParqueoEntity r where r.fechaSalida is null")
+	public List<RegistroParqueoEntity> darVehiculosIngresados();
 }

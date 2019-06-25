@@ -30,7 +30,6 @@ import co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.excepciones.Estacion
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.modelo.TipoVehiculoEnum;
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.modelo.Vigilante;
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.infraestructura.controlador.EstacionamientoController;
-import co.com.ceiba.ceibaestacionamiento.joan.munoz.infraestructura.repositorio.RepositorioRegistroH2;
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.infraestructura.repositorio.RepositorioRegistroParqueoJPA;
 
 @SpringBootTest
@@ -113,7 +112,7 @@ public class EstacionamientoControllerTest {
 			fail();
 		} catch (EstacionamientoException excepcion) {
 			// Assert
-			assertEquals(excepcion.getMessage(), (RepositorioRegistroH2.VEHICULO_NO_INGRESADO));
+			assertEquals(excepcion.getMessage(), (Vigilante.VEHICULO_NO_INGRESADO));
 		}
 	}
 
@@ -136,14 +135,13 @@ public class EstacionamientoControllerTest {
 	}
 
 	@Test
-	public void sacarVehiculoTest() {
+	public void sacarVehiculoTest() throws Exception {
 		// Arrange
 		String registroParqueoJSON = "{\r\n" + "  \"id\": 100,\r\n"
 				+ "  \"fechaIngreso\": \"2019-06-01T12:19:21.204-0500\",\r\n"
 				+ "  \"fechaSalida\": \"2019-06-03T14:22:14.621-0500\",\r\n" + "  \"tipoVehiculo\": \"MOTO\",\r\n"
 				+ "  \"esMotoAltoCilindraje\": \"S\",\r\n" + "  \"placa\": \"LVS98A\",\r\n" + "  \"valor\": 11500.0\r\n"
 				+ "}";
-		try {
 			// Act
 			String respuesta = mockMvc
 					.perform(put(LOCAL_HOST_API + EstacionamientoController.URL_SACAR_VEHICULO)
@@ -156,9 +154,6 @@ public class EstacionamientoControllerTest {
 			assertEquals(PLACA_INGRESADA, json.getString(PLACA));
 			assertEquals(11500, json.getDouble("valor"), 0);
 
-		} catch (Exception exception) {
-			throw new EstacionamientoException(exception.getMessage());
-		}
 	}
 
 	@Test

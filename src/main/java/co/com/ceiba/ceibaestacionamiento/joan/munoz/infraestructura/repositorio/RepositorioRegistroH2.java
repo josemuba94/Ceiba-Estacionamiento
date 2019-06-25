@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.excepciones.EstacionamientoException;
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.modelo.RegistroParqueo;
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.repositorio.RepositorioRegistroParqueo;
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.infraestructura.entidades.RegistroParqueoEntity;
@@ -13,8 +12,6 @@ import co.com.ceiba.ceibaestacionamiento.joan.munoz.infraestructura.fabrica.Fabr
 
 @Repository
 public class RepositorioRegistroH2 implements RepositorioRegistroParqueo {
-
-	public static final String VEHICULO_NO_INGRESADO = "El vehículo no se encuentra dentro del estacionamiento.";
 	
 	@Autowired
 	private RepositorioRegistroParqueoJPA repositorioRegistroParqueoJPA;
@@ -34,12 +31,8 @@ public class RepositorioRegistroH2 implements RepositorioRegistroParqueo {
 
 	@Override
 	public RegistroParqueo buscarVehiculoIngresado(String placa) {
-		RegistroParqueoEntity registroParqueoEntity = repositorioRegistroParqueoJPA.buscarVehiculoIngresado(placa);
-
-		if (registroParqueoEntity == null)
-			throw new EstacionamientoException(VEHICULO_NO_INGRESADO);
-		
-		return fabricaRegistroParqueo.convertirEntidadDominio(registroParqueoEntity);
+		RegistroParqueoEntity registroParqueoEntity = repositorioRegistroParqueoJPA.buscarVehiculoIngresado(placa);		
+		return (registroParqueoEntity == null) ? null : fabricaRegistroParqueo.convertirEntidadDominio(registroParqueoEntity);
 	}
 
 	@Override

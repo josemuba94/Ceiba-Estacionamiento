@@ -11,7 +11,7 @@ public class SolicitudIngresoDTO {
 	
 	private String tipoVehiculo;
 	private String placa;
-	private char esMotoAltoCilindraje;
+	private boolean motoAltoCilindraje;
 	private Calendar fecha;
 	
 	public SolicitudIngresoDTO() { // Requerido por el framework

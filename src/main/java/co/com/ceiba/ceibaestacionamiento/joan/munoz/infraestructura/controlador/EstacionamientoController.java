@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.dtos.EstadoEstacionamientoDTO;
+import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.dtos.EstacionamientoDTO;
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.dtos.RegistroParqueoDTO;
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.dtos.SolicitudIngresoDTO;
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.servicios.CalcularSalidaService;
@@ -53,7 +53,7 @@ public class EstacionamientoController {
 	}
 	
 	@GetMapping(URL_DAR_ESTADO)
-	public EstadoEstacionamientoDTO darEstadoEstacionamiento () {
+	public EstacionamientoDTO darEstadoEstacionamiento () {
 		return vigilanteDarEstadoService.darVehiculosIngresados();	
 	}
 	

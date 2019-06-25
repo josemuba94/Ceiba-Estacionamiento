@@ -5,19 +5,21 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.excepciones.EstacionamientoException;
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.repositorio.RepositorioRegistroParqueo;
 
-@Service
+@Component
 public class Vigilante {
 
 	public static final String MOTOS_SIN_CUPO = "Actualmente no hay espacio disponible para motos.";
 	public static final String CARROS_SIN_CUPO = "Actualmente no hay espacio disponible para carros.";
 	public static final String DIA_NO_HABIL = "El vehículo no puede ingresar porque no es un día hábil.";
+	public static final String VEHICULO_NO_INGRESADO = "El vehículo no se encuentra dentro del estacionamiento.";
 	public static final String PLACA_DUPLICADA = "Actualmente hay un vehículo ingresado con la misma placa.";
+	
+	public static final String INICIAL_NO_PERMITIDA = "A";
 
 	public static final int CUPO_MOTOS = 10;
 	public static final int CUPO_CARROS = 20;
@@ -30,33 +32,32 @@ public class Vigilante {
 
 	private RepositorioRegistroParqueo repositorioRegistroParqueo;
 
-	@Autowired
 	public Vigilante(RepositorioRegistroParqueo repositorioRegistroParqueo) {
 		this.repositorioRegistroParqueo = repositorioRegistroParqueo;
 	}
 
-	public RegistroParqueo ingresarVehiculo(SolicitudIngreso solicitudIngreso) {
-		try {
-			repositorioRegistroParqueo.buscarVehiculoIngresado(solicitudIngreso.getPlaca());
-			throw new EstacionamientoException(PLACA_DUPLICADA);
-		} catch (EstacionamientoException exception) {
-			if (exception.getMessage().equals(PLACA_DUPLICADA))
-				throw exception;
-		}
-
+	public RegistroParqueo ingresarVehiculo(SolicitudIngreso solicitudIngreso) {		
+		validarPlacaDuplicada(solicitudIngreso.getPlaca());
 		validarDiaHabil(solicitudIngreso);
 		validarCupo(solicitudIngreso);
 
 		RegistroParqueo registroParqueo = new RegistroParqueo(null, solicitudIngreso.getFecha(), null,
-				solicitudIngreso.getTipoVehiculo(), solicitudIngreso.getEsMotoAltoCilindraje(),
+				solicitudIngreso.getTipoVehiculo(), solicitudIngreso.isMotoAltoCilindraje(),
 				solicitudIngreso.getPlaca(), 0.0);
 
 		return repositorioRegistroParqueo.guardarRegistroParqueo(registroParqueo);
 	}
+	
+	public void validarPlacaDuplicada(String placa) {
+		RegistroParqueo registroParqueo = repositorioRegistroParqueo.buscarVehiculoIngresado(placa);
+		if (registroParqueo != null) 
+			throw new EstacionamientoException(PLACA_DUPLICADA);
+	}
 
 	public void validarDiaHabil(SolicitudIngreso solicitudIngreso) {
-		if (solicitudIngreso.getPlaca().startsWith("A")
-				&& solicitudIngreso.getFecha().get(Calendar.DAY_OF_WEEK) > Calendar.MONDAY)
+		if (solicitudIngreso.getPlaca().startsWith(INICIAL_NO_PERMITIDA)
+				&& solicitudIngreso.getFecha().get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY
+				&& solicitudIngreso.getFecha().get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY )
 			throw new EstacionamientoException(DIA_NO_HABIL);
 	}
 
@@ -72,17 +73,20 @@ public class Vigilante {
 
 	public RegistroParqueo calcularSalida(String placa) {
 		RegistroParqueo registroParqueo = repositorioRegistroParqueo.buscarVehiculoIngresado(placa);
+		
+		if (registroParqueo == null) 
+			throw new EstacionamientoException(VEHICULO_NO_INGRESADO);
 
 		registroParqueo.setFechaSalida(Calendar.getInstance());
 		double valor = calcularValor(registroParqueo.getFechaIngreso(), registroParqueo.getFechaSalida(),
-				registroParqueo.getTipoVehiculo(), registroParqueo.getEsMotoAltoCilindraje());
+				registroParqueo.getTipoVehiculo(), registroParqueo.isMotoAltoCilindraje());
 
 		registroParqueo.setValor(valor);
 		return registroParqueo;
 	}
 
 	public double calcularValor(Calendar fechaIngreso, Calendar fechaSalida, String tipoVehiculo,
-			char esMotoAltoCilindraje) {
+			boolean esMotoAltoCilindraje) {
 
 		final long miliSegundosPorHora = 3600000;
 		final long miliSegundosPorDia = miliSegundosPorHora * 24;
@@ -99,7 +103,7 @@ public class Vigilante {
 				? dias * VALOR_DIA_MOTO + horas * VALOR_HORA_MOTO
 				: dias * VALOR_DIA_CARRO + horas * VALOR_HORA_CARRO;
 
-		return (esMotoAltoCilindraje == 'S') ? valorFacturado + ADICION_MOTO_PESADA : valorFacturado;
+		return esMotoAltoCilindraje ? valorFacturado + ADICION_MOTO_PESADA : valorFacturado;
 	}
 
 	public RegistroParqueo sacarVehiculo(RegistroParqueo registroParqueo) {
@@ -112,7 +116,6 @@ public class Vigilante {
 
 	public List<String> darTiposVehiculo() {
 		List<String> tiposVehiculo = new ArrayList<>();
-
 		Arrays.asList(TipoVehiculoEnum.values()).forEach(tipoVehiculo -> tiposVehiculo.add(tipoVehiculo.name()));
 
 		return tiposVehiculo;

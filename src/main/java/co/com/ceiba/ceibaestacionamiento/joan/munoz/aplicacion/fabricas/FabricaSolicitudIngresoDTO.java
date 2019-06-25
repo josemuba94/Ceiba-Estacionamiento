@@ -1,15 +1,15 @@
 package co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.fabricas;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.dtos.SolicitudIngresoDTO;
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.modelo.SolicitudIngreso;
 
-@Service
+@Component
 public class FabricaSolicitudIngresoDTO {
 
 	public SolicitudIngreso convertirDTODominio(SolicitudIngresoDTO solicitudIngresoDTO) {
 		return new SolicitudIngreso(solicitudIngresoDTO.getTipoVehiculo(), solicitudIngresoDTO.getPlaca(),
-				solicitudIngresoDTO.getEsMotoAltoCilindraje(), solicitudIngresoDTO.getFecha());
+				solicitudIngresoDTO.isMotoAltoCilindraje(), solicitudIngresoDTO.getFecha());
 	}
 }

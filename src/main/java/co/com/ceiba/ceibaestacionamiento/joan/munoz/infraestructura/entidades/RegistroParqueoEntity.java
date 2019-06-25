@@ -34,7 +34,7 @@ public class RegistroParqueoEntity {
 	@NotNull
 	private String tipoVehiculo;
 	@NotNull
-	private char esMotoAltoCilindraje;
+	private boolean motoAltoCilindraje;
 	@NotNull
 	private String placa;
 	private double valor;

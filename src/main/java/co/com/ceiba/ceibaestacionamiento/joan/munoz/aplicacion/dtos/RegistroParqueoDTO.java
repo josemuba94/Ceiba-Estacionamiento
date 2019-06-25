@@ -13,7 +13,7 @@ public class RegistroParqueoDTO {
 	private Calendar fechaIngreso;
 	private Calendar fechaSalida;
 	private String tipoVehiculo;
-	private char esMotoAltoCilindraje;
+	private boolean motoAltoCilindraje;
 	private String placa;
 	private double valor;
 	
@@ -22,12 +22,12 @@ public class RegistroParqueoDTO {
 	}
 
 	public RegistroParqueoDTO(Long id, Calendar fechaIngreso, Calendar fechaSalida, String tipoVehiculo,
-			char esMotoAltoCilindraje, String placa, double valor) {
+			boolean motoAltoCilindraje, String placa, double valor) {
 		this.id = id;
 		this.fechaIngreso = fechaIngreso;
 		this.fechaSalida = fechaSalida;
 		this.tipoVehiculo = tipoVehiculo;
-		this.esMotoAltoCilindraje = esMotoAltoCilindraje;
+		this.motoAltoCilindraje = motoAltoCilindraje;
 		this.placa = placa;
 		this.valor = valor;
 	}

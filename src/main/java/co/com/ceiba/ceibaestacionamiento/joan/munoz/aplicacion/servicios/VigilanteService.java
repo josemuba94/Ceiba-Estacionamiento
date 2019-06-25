@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.dtos.EstadoEstacionamientoDTO;
+import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.dtos.EstacionamientoDTO;
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.dtos.RegistroParqueoDTO;
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.dtos.SolicitudIngresoDTO;
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.fabricas.FabricaRegistroParqueoDTO;
@@ -44,9 +44,9 @@ public class VigilanteService
 	}
 
 	@Override
-	public EstadoEstacionamientoDTO darVehiculosIngresados() {
+	public EstacionamientoDTO darVehiculosIngresados() {
 		List<String> tiposVehiculo = vigilante.darTiposVehiculo();
 		List<RegistroParqueo> vehiculosIngresados = vigilante.darVehiculosIngresados();
-		return new EstadoEstacionamientoDTO(tiposVehiculo, vehiculosIngresados);
+		return new EstacionamientoDTO(tiposVehiculo, vehiculosIngresados);
 	}
 }

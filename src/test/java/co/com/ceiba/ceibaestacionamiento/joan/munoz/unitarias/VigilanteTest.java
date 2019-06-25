@@ -87,7 +87,7 @@ public class VigilanteTest {
 		Calendar fechaSalida  = new GregorianCalendar(2019, Calendar.JUNE, 15, 15, 15);
 		
 		// Act
-		double valorFacturado = vigilante.calcularValor(fechaIngreso, fechaSalida, TipoVehiculoEnum.MOTO.name(), 'S');
+		double valorFacturado = vigilante.calcularValor(fechaIngreso, fechaSalida, TipoVehiculoEnum.MOTO.name(), true);
 		
 		// Assert
 		assertTrue(11500 == valorFacturado);
@@ -100,7 +100,7 @@ public class VigilanteTest {
 		Calendar fechaSalida  = new GregorianCalendar(2019, Calendar.JUNE, 15, 15, 27);
 		
 		// Act
-		double valorFacturado = vigilante.calcularValor(fechaIngreso, fechaSalida, TipoVehiculoEnum.CARRO.name(), 'N');
+		double valorFacturado = vigilante.calcularValor(fechaIngreso, fechaSalida, TipoVehiculoEnum.CARRO.name(), false);
 		
 		// Assert
 		assertTrue(11000 == valorFacturado);

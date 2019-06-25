@@ -3,12 +3,12 @@ package co.com.ceiba.ceibaestacionamiento.joan.munoz.infraestructura.fabrica;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.modelo.RegistroParqueo;
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.infraestructura.entidades.RegistroParqueoEntity;
 
-@Service
+@Component
 public class FabricaRegistroParqueo {
 
 	public RegistroParqueoEntity convertiraDominioEntidad(RegistroParqueo registroParqueo) {
@@ -17,17 +17,17 @@ public class FabricaRegistroParqueo {
 		registroParqueoEntity.setFechaIngreso(registroParqueo.getFechaIngreso());
 		registroParqueoEntity.setFechaSalida(registroParqueo.getFechaSalida());
 		registroParqueoEntity.setTipoVehiculo(registroParqueo.getTipoVehiculo());
-		registroParqueoEntity.setEsMotoAltoCilindraje(registroParqueo.getEsMotoAltoCilindraje());
+		registroParqueoEntity.setMotoAltoCilindraje(registroParqueo.isMotoAltoCilindraje());
 		registroParqueoEntity.setPlaca(registroParqueo.getPlaca());
 		registroParqueoEntity.setValor(registroParqueo.getValor());
 
 		return registroParqueoEntity;
 	}
 
-	public RegistroParqueo convertirEntidadDominio(RegistroParqueoEntity registroParqueoEntity) {
+	public RegistroParqueo convertirEntidadDominio(RegistroParqueoEntity registroParqueoEntity) {		
 		return new RegistroParqueo(registroParqueoEntity.getId(), registroParqueoEntity.getFechaIngreso(),
 				registroParqueoEntity.getFechaSalida(), registroParqueoEntity.getTipoVehiculo(),
-				registroParqueoEntity.getEsMotoAltoCilindraje(), registroParqueoEntity.getPlaca(),
+				registroParqueoEntity.isMotoAltoCilindraje(), registroParqueoEntity.getPlaca(),
 				registroParqueoEntity.getValor());
 	}
 

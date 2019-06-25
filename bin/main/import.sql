@@ -1,2 +1,2 @@
-INSERT INTO Registros_Parqueo (id,fecha_Ingreso,tipo_Vehiculo,es_Moto_Alto_Cilindraje,placa,valor) VALUES (100,'2019-06-01T12:19:21','MOTO', 'S','LVS98A', 0);
+INSERT INTO Registros_Parqueo (id,fecha_Ingreso,tipo_Vehiculo,moto_Alto_Cilindraje,placa,valor) VALUES (100,'2019-06-01T12:19:21','MOTO', 1,'LVS98A', 0);
 																		
