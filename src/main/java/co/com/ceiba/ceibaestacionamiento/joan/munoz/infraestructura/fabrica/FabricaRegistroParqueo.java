@@ -3,12 +3,9 @@ package co.com.ceiba.ceibaestacionamiento.joan.munoz.infraestructura.fabrica;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.stereotype.Component;
-
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.modelo.RegistroParqueo;
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.infraestructura.entidades.RegistroParqueoEntity;
 
-@Component
 public class FabricaRegistroParqueo {
 
 	public RegistroParqueoEntity convertiraDominioEntidad(RegistroParqueo registroParqueo) {
@@ -32,11 +29,8 @@ public class FabricaRegistroParqueo {
 	}
 
 	public List <RegistroParqueo> convertirListEntityListDominio(List<RegistroParqueoEntity> listadoVehiculosEntity) {
-		List <RegistroParqueo> listadoVehiculos = new ArrayList<>();
-		
-		int cantidadVehiculos = listadoVehiculosEntity.size();
-		for(int i = 0; i < cantidadVehiculos; i++) 
-			listadoVehiculos.add(convertirEntidadDominio(listadoVehiculosEntity.get(i)));		
+		List <RegistroParqueo> listadoVehiculos = new ArrayList<>();		
+		listadoVehiculosEntity.forEach(vehiculoEntity -> listadoVehiculos.add(convertirEntidadDominio(vehiculoEntity)));
 		
 		return listadoVehiculos;
 	}

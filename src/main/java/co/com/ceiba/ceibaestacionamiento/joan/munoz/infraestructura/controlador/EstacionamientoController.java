@@ -14,7 +14,7 @@ import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.dtos.Estacionamie
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.dtos.RegistroParqueoDTO;
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.dtos.SolicitudIngresoDTO;
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.servicios.CalcularSalidaService;
-import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.servicios.DarEstadoEstacionamiento;
+import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.servicios.ObtenerEstacionamiento;
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.servicios.IngresarVehiculoService;
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.servicios.SacarVehiculoService;
 
@@ -26,7 +26,7 @@ public class EstacionamientoController {
 	public static final String URL_INGRESAR_VEHICULO = "/ingresarVehiculo";
 	public static final String URL_CALCULAR_SALIDA   = "/calcularSalida/{placa}";
 	public static final String URL_SACAR_VEHICULO    = "/sacarVehiculo";
-	public static final String URL_DAR_ESTADO        = "/darEstado";
+	public static final String URL_ESTACIONAMIENTO   = "/obtenerEstacionamiento";
 	
 	@Autowired
 	private IngresarVehiculoService vigilanteIngresarService;
@@ -35,7 +35,7 @@ public class EstacionamientoController {
 	@Autowired
 	private SacarVehiculoService vigilanteSacarService;
 	@Autowired
-	private DarEstadoEstacionamiento vigilanteDarEstadoService;
+	private ObtenerEstacionamiento vigilanteEstacionamientoService;
 
 	@PostMapping(URL_INGRESAR_VEHICULO)
 	public RegistroParqueoDTO ingresarVehiculo(@RequestBody SolicitudIngresoDTO solicitudIngresoDTO) {
@@ -52,9 +52,9 @@ public class EstacionamientoController {
 		return vigilanteSacarService.sacarVehiculo(registroParqueoDTO);		
 	}
 	
-	@GetMapping(URL_DAR_ESTADO)
-	public EstacionamientoDTO darEstadoEstacionamiento () {
-		return vigilanteDarEstadoService.darVehiculosIngresados();	
+	@GetMapping(URL_ESTACIONAMIENTO)
+	public EstacionamientoDTO obtenerEstacionamiento () {
+		return vigilanteEstacionamientoService.obtenerEstacionamiento();	
 	}
 	
 	

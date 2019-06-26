@@ -15,14 +15,17 @@ import co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.modelo.Vigilante;
 
 @Service
 public class VigilanteService
-		implements IngresarVehiculoService, CalcularSalidaService, SacarVehiculoService, DarEstadoEstacionamiento {
+		implements IngresarVehiculoService, CalcularSalidaService, SacarVehiculoService, ObtenerEstacionamiento {
 
 	@Autowired
 	private Vigilante vigilante;
-	@Autowired
 	private FabricaRegistroParqueoDTO fabricaRegistroParqueoDTO;
-	@Autowired
 	private FabricaSolicitudIngresoDTO fabricaSolicitudIngreso;
+	
+	public VigilanteService() {
+		fabricaRegistroParqueoDTO = new FabricaRegistroParqueoDTO();
+		fabricaSolicitudIngreso = new FabricaSolicitudIngresoDTO();
+	}
 
 	@Override
 	public RegistroParqueoDTO ingresarVehiculo(SolicitudIngresoDTO solicitudIngresoDTO) {
@@ -44,7 +47,7 @@ public class VigilanteService
 	}
 
 	@Override
-	public EstacionamientoDTO darVehiculosIngresados() {
+	public EstacionamientoDTO obtenerEstacionamiento() {
 		List<String> tiposVehiculo = vigilante.darTiposVehiculo();
 		List<RegistroParqueo> vehiculosIngresados = vigilante.darVehiculosIngresados();
 		return new EstacionamientoDTO(tiposVehiculo, vehiculosIngresados);

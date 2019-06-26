@@ -1,7 +1,6 @@
 package co.com.ceiba.ceibaestacionamiento.joan.munoz.integracion;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -10,6 +9,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.nio.charset.Charset;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import org.json.JSONObject;
 import org.json.JSONArray;
@@ -26,6 +27,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
+import co.com.ceiba.ceibaestacionamiento.joan.munoz.datatestbuilder.RegistroParqueoDataTestBuilder;
+import co.com.ceiba.ceibaestacionamiento.joan.munoz.datatestbuilder.SolicitudIngresoDataTestBuilder;
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.excepciones.EstacionamientoException;
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.modelo.TipoVehiculoEnum;
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.modelo.Vigilante;
@@ -63,48 +66,26 @@ public class EstacionamientoControllerTest {
 	}
 
 	@Test
-	public void ingresarVehiculoTest() {
+	public void ingresarVehiculoTest() throws Exception {
 		// Arrange
-		String registroParqueoJSON = "{ \"tipoVehiculo\": \"MOTO\", \"esMotoAltoCilindraje\": \"N\", \"placa\": \"BKY61C\",\r\n"
-				+ "	\"fecha\": \"2019-06-13T16:22:36.204-0500\" }";
-		try {
-			// Act
-			String respuesta = mockMvc
-					.perform(post(LOCAL_HOST_API + EstacionamientoController.URL_INGRESAR_VEHICULO)
-							.contentType(APLICACION_JSON_UTF8).content(registroParqueoJSON))
-					.andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+		String placa = "BKY61C";
+		String solicitudIngresoJson = new SolicitudIngresoDataTestBuilder().conPlaca(placa).construirSolicitudJson();
+		// Act
+		String respuesta = mockMvc
+				.perform(post(LOCAL_HOST_API + EstacionamientoController.URL_INGRESAR_VEHICULO)
+						.contentType(APLICACION_JSON_UTF8).content(solicitudIngresoJson))
+				.andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 
-			JSONObject json = new JSONObject(respuesta);
-			
-			// Assert
-			assertEquals(101, json.getLong("id"));
-			assertEquals("BKY61C", json.getString(PLACA));
+		JSONObject json = new JSONObject(respuesta);
 
-		} catch (Exception exception) {
-			throw new EstacionamientoException(exception.getMessage());
-		}
-	}
-
-	@Test
-	public void placaDuplicadaTest() {
-		// Arrange
-		String registroParqueoJSON = "{ \"tipoVehiculo\": \"MOTO\", \"esMotoAltoCilindraje\": \"N\", \"placa\": \"LVS98A\",\r\n"
-				+ "	\"fecha\": \"2019-06-13T16:22:36.204-0500\" }";
-		try {
-			// Act
-			mockMvc.perform(post(LOCAL_HOST_API + EstacionamientoController.URL_INGRESAR_VEHICULO)
-					.contentType(APLICACION_JSON_UTF8).content(registroParqueoJSON)).andExpect(status().isOk());
-			fail();
-		} catch (Exception exception) {
-			// Assert
-			assertTrue(exception.getMessage().indexOf(Vigilante.PLACA_DUPLICADA) != -1);
-		}
+		// Assert
+		assertEquals(placa, json.getString(PLACA));
 	}
 
 	@Test
 	public void vehiculoNoEncontradoTest() {
 		// Arrange
-		String placa = "#%$/(/";
+		String placa = "#%$/(/$#";
 
 		try {
 			// Act
@@ -117,71 +98,60 @@ public class EstacionamientoControllerTest {
 	}
 
 	@Test
-	public void calcularSalidaTest() {
-		try {
-			// Act
-			String respuesta = mockMvc
-					.perform(get(LOCAL_HOST_API + EstacionamientoController.URL_CALCULAR_SALIDA, PLACA_INGRESADA))
-					.andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+	public void calcularSalidaTest() throws Exception {
+		// Act
+		String respuesta = mockMvc
+				.perform(get(LOCAL_HOST_API + EstacionamientoController.URL_CALCULAR_SALIDA, PLACA_INGRESADA))
+				.andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 
-			JSONObject json = new JSONObject(respuesta);
+		JSONObject json = new JSONObject(respuesta);
 
-			// Assert
-			assertEquals(PLACA_INGRESADA, json.getString(PLACA));
-
-		} catch (Exception exception) {
-			throw new EstacionamientoException(exception.getMessage());
-		}
+		// Assert
+		assertEquals(PLACA_INGRESADA, json.getString(PLACA));
+		assertTrue(Double.parseDouble(json.getString("valor")) > 0.0);
 	}
 
 	@Test
 	public void sacarVehiculoTest() throws Exception {
 		// Arrange
-		String registroParqueoJSON = "{\r\n" + "  \"id\": 100,\r\n"
-				+ "  \"fechaIngreso\": \"2019-06-01T12:19:21.204-0500\",\r\n"
-				+ "  \"fechaSalida\": \"2019-06-03T14:22:14.621-0500\",\r\n" + "  \"tipoVehiculo\": \"MOTO\",\r\n"
-				+ "  \"esMotoAltoCilindraje\": \"S\",\r\n" + "  \"placa\": \"LVS98A\",\r\n" + "  \"valor\": 11500.0\r\n"
-				+ "}";
-			// Act
-			String respuesta = mockMvc
-					.perform(put(LOCAL_HOST_API + EstacionamientoController.URL_SACAR_VEHICULO)
-							.contentType(APLICACION_JSON_UTF8).content(registroParqueoJSON))
-					.andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+		String registroParqueoJSON = new RegistroParqueoDataTestBuilder().conPlaca(PLACA_INGRESADA)
+				.conFechaIngreso(new GregorianCalendar(2019, Calendar.JUNE, 01, 12, 19))
+				.conFechaSalida(new GregorianCalendar(2019, Calendar.JUNE, 03, 14, 22))
+				.conValor(11500).construirRegistroJson();
+		
+		// Act
+		String respuesta = mockMvc
+				.perform(put(LOCAL_HOST_API + EstacionamientoController.URL_SACAR_VEHICULO)
+						.contentType(APLICACION_JSON_UTF8).content(registroParqueoJSON))
+				.andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 
-			JSONObject json = new JSONObject(respuesta);
+		JSONObject json = new JSONObject(respuesta);
 
-			// Assert
-			assertEquals(PLACA_INGRESADA, json.getString(PLACA));
-			assertEquals(11500, json.getDouble("valor"), 0);
-
+		// Assert
+		assertEquals(PLACA_INGRESADA, json.getString(PLACA));
+		assertEquals(11500, json.getDouble("valor"), 0);
 	}
 
 	@Test
-	public void darVehiculosIngresadosTest() {
+	public void darVehiculosIngresadosTest() throws Exception {
 		// Arrange
 		JSONObject respuestaJson;
 		JSONArray tiposVehiculo;
 		JSONArray listadoVehiculos;
 		JSONObject vehiculoIngresado;
 
-		try {
-			// Act
-			String respuesta = mockMvc.perform(get(LOCAL_HOST_API + EstacionamientoController.URL_DAR_ESTADO))
-					.andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+		// Act
+		String respuesta = mockMvc.perform(get(LOCAL_HOST_API + EstacionamientoController.URL_ESTACIONAMIENTO))
+				.andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 
-			respuestaJson = new JSONObject(respuesta);
-			tiposVehiculo = new JSONArray(respuestaJson.get("tiposVehiculo").toString());
-			listadoVehiculos = new JSONArray(respuestaJson.get("vehiculosIngresados").toString());
-			vehiculoIngresado = new JSONObject(listadoVehiculos.get(0).toString());
+		respuestaJson = new JSONObject(respuesta);
+		tiposVehiculo = new JSONArray(respuestaJson.get("tiposVehiculo").toString());
+		listadoVehiculos = new JSONArray(respuestaJson.get("vehiculosIngresados").toString());
+		vehiculoIngresado = new JSONObject(listadoVehiculos.get(0).toString());
 
-			// Assert
-			assertNotNull(respuestaJson);
-			assertEquals(TipoVehiculoEnum.CARRO.name(), tiposVehiculo.get(0));
-			assertEquals(TipoVehiculoEnum.MOTO.name(), tiposVehiculo.get(1));
-			assertEquals(PLACA_INGRESADA, vehiculoIngresado.getString(PLACA));
-
-		} catch (Exception exception) {
-			throw new EstacionamientoException(exception.getMessage());
-		}
+		// Assert
+		assertEquals(TipoVehiculoEnum.CARRO.name(), tiposVehiculo.get(0));
+		assertEquals(TipoVehiculoEnum.MOTO.name(), tiposVehiculo.get(1));
+		assertEquals(PLACA_INGRESADA, vehiculoIngresado.getString(PLACA));
 	}
 }

@@ -15,8 +15,11 @@ public class RepositorioRegistroH2 implements RepositorioRegistroParqueo {
 	
 	@Autowired
 	private RepositorioRegistroParqueoJPA repositorioRegistroParqueoJPA;
-	@Autowired
 	private FabricaRegistroParqueo fabricaRegistroParqueo;	
+	
+	public RepositorioRegistroH2() {
+		fabricaRegistroParqueo = new FabricaRegistroParqueo();
+	}
 
 	@Override
 	public RegistroParqueo guardarRegistroParqueo(RegistroParqueo registroParqueo) {

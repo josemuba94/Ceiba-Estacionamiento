@@ -15,12 +15,8 @@ public class EstacionamientoDTO {
 	public EstacionamientoDTO(List<String> tiposVehiculo, List<RegistroParqueo> vehiculosIngresados) {
 		this.tiposVehiculo = tiposVehiculo;
 		this.vehiculosIngresados = new ArrayList<>();
-		mapearVehiculosIngresados(vehiculosIngresados);
-	}
-
-	public void mapearVehiculosIngresados(List<RegistroParqueo> vehiculosIngresados) {
-		for (int i = 0; i < vehiculosIngresados.size(); i++)
-			this.vehiculosIngresados.add(new VehiculoIngresadoDTO(vehiculosIngresados.get(i).getPlaca(),
-					vehiculosIngresados.get(i).getTipoVehiculo(), vehiculosIngresados.get(i).getFechaIngreso()));
+		vehiculosIngresados.forEach(
+				vehiculoIngresado -> this.vehiculosIngresados.add(new VehiculoIngresadoDTO(vehiculoIngresado.getPlaca(),
+						vehiculoIngresado.getTipoVehiculo(), vehiculoIngresado.getFechaIngreso())));
 	}
 }

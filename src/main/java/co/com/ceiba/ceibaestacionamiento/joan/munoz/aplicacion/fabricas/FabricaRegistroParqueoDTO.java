@@ -1,12 +1,8 @@
 package co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.fabricas;
 
-
-import org.springframework.stereotype.Component;
-
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.aplicacion.dtos.RegistroParqueoDTO;
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.modelo.RegistroParqueo;
 
-@Component
 public class FabricaRegistroParqueoDTO {
 
 	public RegistroParqueo convertirDTODominio(RegistroParqueoDTO registroParqueoDTO) {
