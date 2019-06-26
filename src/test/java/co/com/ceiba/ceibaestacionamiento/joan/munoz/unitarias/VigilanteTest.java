@@ -137,7 +137,7 @@ public class VigilanteTest {
 		double valorFacturado = vigilante.calcularValor(fechaIngreso, fechaSalida, TipoVehiculoEnum.MOTO.name(), true);
 		
 		// Assert
-		assertEquals(6500, valorFacturado, 0);
+		assertEquals(6000, valorFacturado, 0);
 	}
 	
 	@Test
