@@ -131,7 +131,7 @@ public class VigilanteTest {
 	public void calcularValorMotoPesadaTest() {
 		// Arrange
 		Calendar fechaIngreso = new GregorianCalendar(2019, Calendar.JUNE, 13, 12, 00);
-		Calendar fechaSalida  = new GregorianCalendar(2019, Calendar.JUNE, 13, 20, 01);
+		Calendar fechaSalida  = new GregorianCalendar(2019, Calendar.JUNE, 13, 21, 01);
 		
 		// Act
 		double valorFacturado = vigilante.calcularValor(fechaIngreso, fechaSalida, TipoVehiculoEnum.MOTO.name(), true);
