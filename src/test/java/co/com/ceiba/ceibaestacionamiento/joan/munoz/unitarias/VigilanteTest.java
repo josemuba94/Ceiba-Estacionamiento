@@ -177,9 +177,9 @@ public class VigilanteTest {
 			vigilante.validarPlacaDuplicada(registroParqueo.getPlaca());
 			fail();
 			
-		} catch (Exception e) {
+		} catch (Exception excepcion) {
 			// Assert
-			assertEquals(Vigilante.PLACA_DUPLICADA, e.getMessage());
+			assertEquals(Vigilante.PLACA_DUPLICADA, excepcion.getMessage());
 		}		
 	}
 }

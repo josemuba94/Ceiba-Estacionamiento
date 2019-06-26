@@ -10,7 +10,7 @@ import lombok.Getter;
 @Getter
 public class SolicitudIngreso {
 
-	public static final String TIPO_NO_VALIDO = "El estacionamiento solo acepta motos y carros.";
+	public static final String TIPO_INVALIDO = "El estacionamiento solo acepta motos y carros.";
 	public static final String DATOS_INCOMPLETOS = "Se deben ingresar todos los campos requeridos.";
 	public static final String FECHA_INVALIDA = "La fecha de solicitud de ingreso es mayor a la fecha actual.";
 	
@@ -44,6 +44,6 @@ public class SolicitudIngreso {
 				break;
 			}		
 		if (!valido)
-			throw new EstacionamientoException(TIPO_NO_VALIDO);		
+			throw new EstacionamientoException(TIPO_INVALIDO);		
 	}
 }
