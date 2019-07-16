@@ -1,8 +1,6 @@
 package co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.modelo;
 
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.List;
 
 import co.com.ceiba.ceibaestacionamiento.joan.munoz.dominio.excepciones.EstacionamientoException;
 import lombok.Getter;
@@ -31,19 +29,13 @@ public class SolicitudIngreso {
 		if(placa == null || tipoVehiculo == null || fecha == null )
 			throw new EstacionamientoException(DATOS_INCOMPLETOS);
 			
-		Calendar fechaActual = Calendar.getInstance();
-		if(fecha.getTimeInMillis() > fechaActual.getTimeInMillis())
-			throw new EstacionamientoException(FECHA_INVALIDA);			
+		if(fecha.getTimeInMillis() > Calendar.getInstance().getTimeInMillis())
+			throw new EstacionamientoException(FECHA_INVALIDA);
 		
-		boolean valido = false;		
-		List<TipoVehiculoEnum> tiposVehiculoEnum = Arrays.asList(TipoVehiculoEnum.values()); 
-		
-		for(int i=0; i< tiposVehiculoEnum.size(); i++)
-			if(tipoVehiculo.equals(tiposVehiculoEnum.get(i).name())) {
-				valido = true;
-				break;
-			}		
-		if (!valido)
-			throw new EstacionamientoException(TIPO_INVALIDO);		
+		try {
+			TipoVehiculoEnum.valueOf(tipoVehiculo);			
+		} catch (IllegalArgumentException exception) {
+			throw new EstacionamientoException(TIPO_INVALIDO);
+		}	
 	}
 }
